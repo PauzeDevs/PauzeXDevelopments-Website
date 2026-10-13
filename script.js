@@ -54,7 +54,10 @@ All rights reserved. Viewing this source on GitHub does not grant permission to 
     window.setTimeout(complete, 1450);
   }
 
-  enterButton?.addEventListener("click", () => finishIntro(false));
+  enterButton?.addEventListener("click", () => {
+    finishIntro(false);
+    window.setTimeout(() => document.getElementById("work")?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" }), reduceMotion ? 0 : 1450);
+  });
   skipLink?.addEventListener("click", (event) => {
     if (!intro || !intro.isConnected) return;
     event.preventDefault();
