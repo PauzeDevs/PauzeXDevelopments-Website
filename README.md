@@ -1,106 +1,85 @@
 <!--
 Copyright (c) 2026 Aarav Singh / PauzeDevs.
-
-VIEW-ONLY SOURCE — DO NOT COPY, MODIFY, REDISTRIBUTE, OR REUSE WITHOUT PRIOR WRITTEN PERMISSION.
-All rights reserved. Public visibility does not grant a reuse licence.
+ALL RIGHTS RESERVED. View-only source; no reuse without prior written permission.
 -->
 
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:28211e,55:955740,100:d5a088&height=190&section=header&text=PauzeX%20Developments&fontSize=38&fontColor=f8f0e8&fontAlignY=38&desc=Software%20built%20with%20intent&descAlignY=60&animation=fadeIn" alt="PauzeX Developments — Software built with intent" width="100%">
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:28211e,55:955740,100:d5a088&height=170&section=header&text=PauzeX%20Developments&fontSize=36&fontColor=f8f0e8&fontAlignY=38&desc=Build.%20Ship%20better.&descAlignY=60&animation=fadeIn" alt="PauzeX Developments — Build. Ship better." width="100%">
 
 <a href="https://pauzex.devs.surf"><img src="https://devs.surf/badges/subdomain.svg" alt="Visit pauzex.devs.surf"></a>
 <a href="https://github.com/PauzeDevs/PauzeXDevelopments-Website/actions/workflows/deploy.yml"><img src="https://github.com/PauzeDevs/PauzeXDevelopments-Website/actions/workflows/deploy.yml/badge.svg" alt="GitHub Pages deployment status"></a>
-<a href="https://pauzedevs.github.io/PauzeXDevelopments-Website/"><img src="https://img.shields.io/badge/live%20site-open-955740?style=flat&labelColor=28211e" alt="Open the live website"></a>
-<a href="https://github.com/PauzeDevs/PauzeXDevelopments-Website"><img src="https://img.shields.io/badge/source-view%20repository-955740?style=flat&labelColor=28211e" alt="View source repository"></a>
+<a href="https://pauzedevs.github.io/PauzeXDevelopments-Website/"><img src="https://img.shields.io/badge/website-live-955740?style=flat&labelColor=28211e" alt="Open the live website"></a>
+<a href="LICENSE"><img src="https://img.shields.io/badge/source-view--only-955740?style=flat&labelColor=28211e" alt="View-only source; all rights reserved"></a>
 
-<br>
-
-<img src="https://readme-typing-svg.demolab.com?font=DM+Mono&size=15&duration=2600&pause=850&color=955740&center=true&vCenter=true&width=520&lines=Build+useful+things.;Test+the+details.;Ship.+Learn.+Improve." alt="Build useful things. Test the details. Ship, learn, improve.">
+<img src="https://readme-typing-svg.demolab.com?font=DM+Mono&size=14&duration=3000&pause=1000&color=955740&center=true&vCenter=true&width=430&lines=Practical+software.+Thoughtful+details.;Prototype.+Test.+Improve.;Built+to+be+useful." alt="Practical software. Thoughtful details. Prototype, test, improve. Built to be useful.">
 
 </div>
 
 ---
 
-## About
+## Overview
 
-PauzeX Developments is an independent software development group working on practical tools, apps, web experiences, and technical experiments. This repository contains the public-facing studio website.
+PauzeX Developments is an independent software studio for apps, developer tools, web experiences, and technical experiments. This repository contains the studio's public-facing website.
 
-The site is intentionally lightweight: semantic HTML, a single stylesheet, and vanilla JavaScript. There is no frontend framework, package install, bundler, or compile step.
+The site follows the same principle as the projects it presents: keep the experience purposeful, make interactions useful, and avoid unnecessary dependencies.
 
-## Featured projects
+**[Open the live website ↗](https://pauzedevs.github.io/PauzeXDevelopments-Website/)**
 
-| Project | What it does | Source |
-| --- | --- | --- |
-| **PauzePulse** | Interactive project focused on gameplay mechanics, distinct scenes, and 2D animation. | [Repository](https://github.com/PauzeDevs/PauzePulse) |
-| **PauzeControl** | Remote-control utility connecting a Mac and Android device, including screen streaming and network connectivity. | [Repository](https://github.com/PauzeDevs/PauzeControl) |
-| **PauzeWeather** | Android weather app with forecasts, alerts, air quality, radar, and cached data. | [Repository](https://github.com/PauzeX-Developments/PauzeWeatherDeveloped) |
+## Website structure
 
-Project details shown on the site are fetched from GitHub's public API. API rate limits or unavailable release data should not prevent direct repository links from working.
+`INTRO → HOME → STUDIO → PROJECTS → ENGINEERING → CONTACT`
 
-## Design and behaviour
+| Section | Purpose |
+| --- | --- |
+| **Intro & home** | A short entrance screen, studio message, and primary navigation. |
+| **Studio** | Explains the team's approach to building, testing, and iteration. |
+| **Projects** | Searchable project cards with category filters, repository details, release links, and recent public activity from GitHub. |
+| **Engineering** | Summarises application development, frontend work, APIs, integrations, quality, and maintenance. |
+| **Contact** | Provides the closing message and contact route. |
 
-- Warm cream, clay, and cocoa colours with restrained editorial typography.
-- Short intro sequence and scroll-based reveals.
-- Searchable project directory with category filters.
-- Live repository metadata, latest-release links, and recent commits.
-- Responsive navigation and layouts.
-- Reduced-motion support and keyboard-accessible controls.
-- No forced audio, fake project metrics, or fabricated release information.
+The layout is responsive, the navigation supports mobile screens, and motion-sensitive visitors are covered by reduced-motion handling. Repository data comes from GitHub's public API; when API requests are rate-limited, direct repository links remain available.
 
-## Code structure
+## Featured work
+
+| Project | Focus |
+| --- | --- |
+| [PauzePulse](https://github.com/PauzeDevs/PauzePulse) | Interactive gameplay, distinct scenes, and 2D animation. |
+| [PauzeControl](https://github.com/PauzeDevs/PauzeControl) | Mac-to-Android remote control and screen streaming. |
+| [PauzeWeather](https://github.com/PauzeX-Developments/PauzeWeatherDeveloped) | Android weather forecasts, alerts, air quality, radar, and cached data. |
+
+## Code map
 
 ```text
 .
-├── index.html                  # Page content and accessible landmarks
-├── styles.css                  # Design tokens, layout, responsive styles, motion
-├── script.js                   # Navigation, intro, reveals, project filters, GitHub data
-├── .github/
-│   └── workflows/
-│       └── deploy.yml          # GitHub Pages deployment
-├── .nojekyll                   # Publish static files without Jekyll processing
-├── LICENSE                     # All-rights-reserved usage terms
-└── README.md                   # Project overview and maintenance notes
+├── index.html
+│   └── Page content, metadata, navigation, and accessible landmarks
+├── styles.css
+│   └── Colour tokens, typography, layout, responsive rules, and motion
+├── script.js
+│   └── Intro state, navigation, reveals, project filters, and GitHub API data
+├── .github/workflows/deploy.yml
+│   └── JavaScript syntax validation and GitHub Pages deployment
+├── .nojekyll
+├── LICENSE
+└── README.md
 ```
 
-JavaScript is kept dependency-free and grouped by responsibility. The stylesheet uses shared custom properties for the palette and typography, with responsive and reduced-motion rules kept explicit.
+The site uses semantic HTML, one shared stylesheet, and dependency-free vanilla JavaScript. There is no package install, frontend framework, bundler, or compile step.
 
-## Run locally
+## Deployment and checks
 
-No installation is needed.
-
-1. Clone the repository if you have permission to do so.
-2. Open `index.html` in a browser, or run any static HTTP server from the project directory.
-3. For example, with Python installed:
-
-   ```bash
-   python -m http.server 8000
-   ```
-
-   Then open `http://localhost:8000`.
-
-The repository's usage terms still apply to copying, modification, and reuse. Local inspection instructions do not grant additional permissions.
-
-## Deployment
-
-GitHub Actions deploys the static site to GitHub Pages when changes are pushed to `main`. The workflow can also be started manually from the **Actions** tab.
-
-If Pages has not been configured, open **Settings → Pages** and select **GitHub Actions** as the build and deployment source.
+The GitHub Actions workflow runs on pushes to `main` and can be triggered manually. Before publishing, it checks JavaScript syntax with `node --check script.js`, assembles the static files, and deploys them to GitHub Pages.
 
 - [Deployment workflow](https://github.com/PauzeDevs/PauzeXDevelopments-Website/actions/workflows/deploy.yml)
-- [Live website](https://pauzedevs.github.io/PauzeXDevelopments-Website/)
-- [Public repository](https://github.com/PauzeDevs/PauzeXDevelopments-Website)
+- [Workflow runs](https://github.com/PauzeDevs/PauzeXDevelopments-Website/actions)
 
-## Maintenance notes
+## Copyright and usage
 
-- Keep repository names and links aligned with the actual GitHub projects.
-- Do not hard-code stars, release versions, or activity dates; render those values from the source API.
-- Keep JavaScript dependency-free unless a real requirement justifies adding a package.
-- Check keyboard navigation, mobile layout, and `prefers-reduced-motion` when changing interactions.
-- Keep functions small and named for their responsibility. Comments should explain non-obvious decisions, not narrate every line.
+> **ALL RIGHTS RESERVED — VIEW-ONLY SOURCE**
+>
+> Copyright © 2026 Aarav Singh / PauzeDevs. This repository is available for inspection on GitHub only. You do **not** have permission to clone or fork it for reuse, mirror it, download it for republishing, modify it, incorporate its code or design into another project, or host a copy of this website on another domain without prior written permission.
+>
+> Public visibility is not a reuse licence. See [LICENSE](LICENSE) for the full terms. Third-party services, fonts, and assets remain subject to their respective owners' terms.
 
-## Rights and attribution
-
-Copyright © 2026 Aarav Singh / PauzeDevs. All rights reserved. This repository is view-only; copying, modification, redistribution, or reuse requires prior written permission. See [LICENSE](LICENSE) for the full notice.
-
-Third-party services used to render README badges and animations are external services and remain subject to their own availability and terms.
+**Important:** GitHub's public-repository features cannot be technically disabled by README wording. This notice communicates the owner's restrictions; it does not prevent a public repository from being copied by technical means.
