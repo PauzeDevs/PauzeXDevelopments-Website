@@ -669,3 +669,20 @@ body.has-fine-pointer .cursor-glow { opacity: 1; }
   .closing-content { min-height: 460px; }
   .closing-title { font-size: clamp(4rem, 14vw, 7rem); }
 }
+
+
+/* Developer-focused motion strip removal and layout refinements. */
+
+/* The repeated scrolling word band has been removed from the page markup. */
+.marquee-band,
+.marquee-track { display: none !important; }
+
+.hero-title em { color: var(--clay-deep); }
+.intro-title em { color: #d5a088; }
+.project-card { align-items: start; }
+.project-meta { overflow-wrap: anywhere; }
+.service-row p { max-width: 620px; }
+@media (max-width: 760px) {
+  .hero { padding-top: 150px; }
+  .hero-title { overflow-wrap: anywhere; }
+}
