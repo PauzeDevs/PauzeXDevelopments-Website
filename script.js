@@ -14,7 +14,6 @@ All rights reserved. Viewing this source on GitHub does not grant permission to 
   const menuToggle = document.getElementById("menu-toggle");
   const mobileNav = document.getElementById("mobile-nav");
   const meterFill = document.getElementById("scroll-meter-fill");
-  const cursorGlow = document.getElementById("cursor-glow");
   const skipLink = document.getElementById("skip-link");
   const mainContent = document.getElementById("main");
   const inertSections = [document.getElementById("site-header"), mainContent, document.querySelector(".site-footer")].filter(Boolean);
