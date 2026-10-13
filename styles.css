@@ -54,7 +54,7 @@ button { cursor: pointer; }
 .intro {
   position: fixed; inset: 0; z-index: 9999; display: flex; flex-direction: column; justify-content: space-between;
   min-height: 560px; overflow: hidden; padding: 28px clamp(22px, 5vw, 72px) 24px;
-  color: var(--paper-bright); background: #28211e;
+  color: var(--paper-bright); background: #10151b;
   transition: clip-path 1.15s var(--ease), opacity .65s ease, visibility .65s ease;
   clip-path: inset(0 0 0 0);
 }
@@ -141,9 +141,8 @@ button { cursor: pointer; }
   padding: 25px clamp(22px, 5vw, 76px); opacity: 0; transform: translateY(-10px); transition: opacity .8s .25s ease, transform .8s .25s var(--ease);
 }
 body.site-entered .site-header { opacity: 1; transform: translateY(0); }
-.wordmark { display: inline-flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 700; letter-spacing: -.04em; }
-.wordmark__dot { width: 9px; height: 9px; border-radius: 50%; background: var(--clay); box-shadow: 0 0 0 4px rgba(189,119,93,.13); }
-.wordmark small { display: block; margin-top: 1px; font-size: 8px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.wordmark { display: inline-flex; align-items: center; flex: 0 0 auto; }
+.wordmark img { display: block; width: clamp(120px, 11.5vw, 148px); height: auto; }
 .desktop-nav { display: flex; align-items: center; gap: clamp(22px, 3.3vw, 52px); margin-left: 4%; }
 .desktop-nav a, .header-contact { font-size: 12px; font-weight: 500; transition: color .2s ease; }
 .desktop-nav a { color: var(--ink-soft); }
@@ -337,8 +336,8 @@ body.site-entered .site-header { opacity: 1; transform: translateY(0); }
 
 .site-footer { padding: 28px clamp(22px, 5vw, 76px) 20px; background: var(--paper-deep); }
 .site-footer__top { display: flex; justify-content: space-between; align-items: center; gap: 25px; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
-.footer-wordmark { font-size: 18px; font-weight: 700; letter-spacing: -.06em; }
-.footer-wordmark em { font: italic 20px var(--display); color: var(--clay-deep); }
+.footer-wordmark { display: inline-flex; align-items: center; flex: 0 0 auto; }
+.footer-wordmark img { display: block; width: clamp(130px, 14vw, 155px); height: auto; }
 .site-footer__top p { margin: 0; color: var(--muted); font-size: 10px; }
 .back-to-top { display: inline-flex; gap: 20px; align-items: center; font-size: 10px; }
 .back-to-top span { font-size: 16px; }
@@ -375,7 +374,8 @@ body.site-entered .site-header { opacity: 1; transform: translateY(0); }
   .enter-button { padding: 11px 12px 11px 15px; }
   .skip-intro { right: 22px; bottom: 27px; }
   .intro-index { display: none; }
-  .site-header { padding: 19px 22px; }
+  .site-header { padding: 13px 22px; }
+  .wordmark img { width: clamp(110px, 29vw, 124px); }
   .desktop-nav, .header-contact { display: none; }
   .menu-toggle { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; width: 40px; height: 40px; border: 1px solid var(--line); border-radius: 50%; background: transparent; }
   .menu-toggle span { width: 14px; height: 1px; background: var(--ink); transition: transform .25s ease; }
@@ -478,7 +478,7 @@ body.site-entered .site-header { opacity: 1; transform: translateY(0); }
 }
 
 .intro {
-  background: #28211e;
+  background: #10151b;
 }
 .intro-composition {
   width: min(100%, 1100px);
@@ -920,4 +920,24 @@ body.site-entered .site-header { opacity: 1; transform: translateY(0); }
   .activity-mark { width: 27px; height: 27px; }
   .activity-meta { grid-column: 2; flex-direction: row; align-items: center; justify-content: space-between; }
   .activity-details p { font-size: 12px; }
+}
+
+
+/* Official PauzeX logo lockup. Keep the source artwork intact and scale it responsively. */
+.intro .intro-title--logo {
+  width: min(78vw, 660px);
+  font-size: 0;
+  letter-spacing: 0;
+  line-height: normal;
+  padding: 0;
+}
+.intro-logo {
+  display: block;
+  width: 100%;
+  height: auto;
+  animation: logo-reveal .85s .16s var(--ease) both;
+}
+@keyframes logo-reveal {
+  from { opacity: .25; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
 }

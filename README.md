@@ -5,11 +5,11 @@ ALL RIGHTS RESERVED. View-only source; no reuse without prior written permission
 
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:28211e,55:955740,100:d5a088&height=170&section=header&text=PauzeX%20Developments&fontSize=36&fontColor=f8f0e8&fontAlignY=38&desc=Build.%20Ship%20better.&descAlignY=60&animation=fadeIn" alt="PauzeX Developments — Build. Ship better." width="100%">
+<a href="https://pauzex.devs.surf/"><img src="https://pauzex.devs.surf/assets/pauzex-logo.webp" alt="PauzeX Developments official logo" width="720"></a>
 
 <a href="https://pauzex.devs.surf"><img src="https://devs.surf/badges/subdomain.svg" alt="Visit pauzex.devs.surf"></a>
 <a href="https://github.com/PauzeDevs/PauzeXDevelopments-Website/actions/workflows/deploy.yml"><img src="https://github.com/PauzeDevs/PauzeXDevelopments-Website/actions/workflows/deploy.yml/badge.svg" alt="GitHub Pages deployment status"></a>
-<a href="https://pauzedevs.github.io/PauzeXDevelopments-Website/"><img src="https://img.shields.io/badge/website-live-955740?style=flat&labelColor=28211e" alt="Open the live website"></a>
+<a href="https://pauzex.devs.surf/"><img src="https://img.shields.io/badge/website-live-955740?style=flat&labelColor=28211e" alt="Open the live website"></a>
 <a href="LICENSE"><img src="https://img.shields.io/badge/source-view--only-955740?style=flat&labelColor=28211e" alt="View-only source; all rights reserved"></a>
 
 <img src="https://readme-typing-svg.demolab.com?font=DM+Mono&size=14&duration=3000&pause=1000&color=955740&center=true&vCenter=true&width=430&lines=Practical+software.+Thoughtful+details.;Prototype.+Test.+Improve.;Built+to+be+useful." alt="Practical software. Thoughtful details. Prototype, test, improve. Built to be useful.">
@@ -24,7 +24,7 @@ PauzeX Developments is an independent software studio for apps, developer tools,
 
 The site follows the same principle as the projects it presents: keep the experience purposeful, make interactions useful, and avoid unnecessary dependencies.
 
-**[Open the live website ↗](https://pauzedevs.github.io/PauzeXDevelopments-Website/)**
+**[Open the live website ↗](https://pauzex.devs.surf/)**
 
 ## Website structure
 
