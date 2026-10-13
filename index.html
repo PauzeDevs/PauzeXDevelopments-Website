@@ -54,8 +54,8 @@ All rights reserved. Viewing this source on GitHub does not grant permission to 
     </a>
     <nav class="desktop-nav" aria-label="Main navigation">
       <a href="#studio">Studio</a>
-      <a href="#work">Selected work</a>
-      <a href="#services">What we do</a>
+      <a href="#work">Projects</a>
+      <a href="#services">Engineering</a>
     </nav>
     <a class="header-contact" href="#contact">Let's talk <span aria-hidden="true">↗</span></a>
     <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open navigation">
@@ -63,8 +63,8 @@ All rights reserved. Viewing this source on GitHub does not grant permission to 
     </button>
     <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation" hidden>
       <a href="#studio">Studio <span>01</span></a>
-      <a href="#work">Selected work <span>02</span></a>
-      <a href="#services">What we do <span>03</span></a>
+      <a href="#work">Projects <span>02</span></a>
+      <a href="#services">Engineering <span>03</span></a>
       <a href="#contact">Contact <span>04</span></a>
     </nav>
   </header>
@@ -123,34 +123,38 @@ All rights reserved. Viewing this source on GitHub does not grant permission to 
         </div>
         <div class="work-title-row reveal">
           <h2 class="section-title" id="work-title">Projects in <em>progress.</em></h2>
-          <p class="work-intro">A snapshot of the tools and projects we are building, maintaining, and experimenting with.</p>
+          <p class="work-intro">Real repositories, current development details, and release links—pulled from GitHub when available.</p>
+        <div class="project-tools" aria-label="Project filters"><label class="project-search"><span class="sr-only">Search projects</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 4.2 4.2"></path></svg><input id="project-search" type="search" placeholder="Find a project…" autocomplete="off"></label><div class="project-filters" role="group" aria-label="Filter projects by type"><button class="project-filter is-active" type="button" data-filter="all" aria-pressed="true">All projects <span>03</span></button><button class="project-filter" type="button" data-filter="app" aria-pressed="false">Apps</button><button class="project-filter" type="button" data-filter="utility" aria-pressed="false">Utilities</button><button class="project-filter" type="button" data-filter="interactive" aria-pressed="false">Interactive</button></div><p class="project-count" id="project-count" aria-live="polite">3 projects</p></div>
         </div>
         <div class="project-grid">
-          <article class="project-card project-card--pulse reveal">
+          <article class="project-card project-card--pulse reveal" data-category="interactive" data-repo="PauzeDevs/PauzePulse">
             
             <div class="project-meta"><span>INTERACTIVE SOFTWARE</span><span>IN THE LAB</span></div>
-            <div class="project-title-row"><h3>PauzePulse</h3><span class="project-arrow" aria-hidden="true">↗</span></div>
-            <p>An interactive project focused on responsive mechanics, polished 2D visuals, animation systems, and reliable gameplay loops.</p>
-            <span class="project-status"><i></i> Being built</span>
+            <div class="project-title-row"><h3>PauzePulse</h3><a class="project-arrow" href="https://github.com/PauzeDevs/PauzePulse" target="_blank" rel="noreferrer" aria-label="View PauzePulse on GitHub">↗</a></div>
+            <p>An Android interactive-play project focused on responsive mechanics, distinct game scenes, animation systems, and reliable gameplay loops.</p>
+            <div class="project-live-meta" data-repo-meta aria-live="polite"><span class="meta-loading">Loading repository details…</span></div><div class="project-release" data-repo-release aria-live="polite">Checking releases…</div>
+            <a class="project-link" href="https://github.com/PauzeDevs/PauzePulse" target="_blank" rel="noreferrer">View repository <span aria-hidden="true">↗</span></a>
           </article>
 
-          <article class="project-card project-card--control reveal">
+          <article class="project-card project-card--control reveal" data-category="utility" data-repo="PauzeDevs/PauzeControl">
             
             <div class="project-meta"><span>DESKTOP / DEVELOPER UTILITY</span><span>PUBLIC REPOSITORY</span></div>
             <div class="project-title-row"><h3>PauzeControl</h3><a class="project-arrow" href="https://github.com/PauzeDevs/PauzeControl" target="_blank" rel="noreferrer" aria-label="View PauzeControl on GitHub">↗</a></div>
-            <p>A utility project built around practical controls and a focused interface. Browse the source, inspect the implementation, and follow development on GitHub.</p>
+            <p>A Mac-to-Android remote-control utility with H.264 screen streaming, real-time status, and Tailscale networking.</p>
+            <div class="project-live-meta" data-repo-meta aria-live="polite"><span class="meta-loading">Loading repository details…</span></div><div class="project-release" data-repo-release aria-live="polite">Checking releases…</div>
             <a class="project-link" href="https://github.com/PauzeDevs/PauzeControl" target="_blank" rel="noreferrer">Explore on GitHub <span aria-hidden="true">↗</span></a>
           </article>
 
-          <article class="project-card project-card--weather reveal">
+          <article class="project-card project-card--weather reveal" data-category="app" data-repo="PauzeX-Developments/PauzeWeatherDeveloped">
             
             <div class="project-meta"><span>WEATHER / API INTEGRATION</span><span>PUBLIC REPOSITORY</span></div>
             <div class="project-title-row"><h3>PauzeWeather</h3><a class="project-arrow" href="https://github.com/PauzeX-Developments/PauzeWeatherDeveloped" target="_blank" rel="noreferrer" aria-label="View PauzeWeather on GitHub">↗</a></div>
-            <p>A weather application connecting forecast data and radar visualisation, with an emphasis on responsive maps and performance.</p>
+            <p>An Android weather app with hourly and daily forecasts, AQI, alerts, interactive radar maps, location management, and offline caching.</p>
+            <div class="project-live-meta" data-repo-meta aria-live="polite"><span class="meta-loading">Loading repository details…</span></div><div class="project-release" data-repo-release aria-live="polite">Checking releases…</div>
             <a class="project-link" href="https://github.com/PauzeX-Developments/PauzeWeatherDeveloped" target="_blank" rel="noreferrer">Explore on GitHub <span aria-hidden="true">↗</span></a>
           </article>
         </div>
-        <div class="work-foot reveal"><span>ACTIVE BUILDS. ITERATIVE DEVELOPMENT.</span><span>MORE REPOSITORIES <span aria-hidden="true">↘</span></span></div>
+        <section class="activity-panel reveal" aria-labelledby="activity-title"><div class="activity-heading"><div><p class="eyebrow"><span class="eyebrow__line"></span> LIVE FROM GITHUB</p><h3 id="activity-title">Recent <em>work.</em></h3></div><a class="text-link" href="https://github.com/PauzeDevs?tab=repositories" target="_blank" rel="noreferrer">All repositories <span aria-hidden="true">↗</span></a></div><div class="activity-list" id="activity-list" aria-live="polite"><p class="activity-state">Fetching the latest public commits…</p></div><p class="activity-footnote" id="activity-footnote">Repository details update from the public GitHub API. If GitHub rate-limits requests, direct repository links remain available.</p></section><div class="work-foot reveal"><span>ACTIVE BUILDS. ITERATIVE DEVELOPMENT.</span><span><span id="project-total">03</span> FEATURED REPOSITORIES</span></div>
       </div>
     </section>
 
