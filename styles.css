@@ -830,6 +830,12 @@ body.site-entered .site-header { opacity: 1; transform: translateY(0); }
   margin-bottom: 24px;
 }
 .activity-heading .eyebrow { margin-bottom: 12px; }
+.activity-profile-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+}
 .activity-heading h3 {
   margin: 0;
   font-size: clamp(2.6rem, 5vw, 4.5rem);
