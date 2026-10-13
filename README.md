@@ -39,3 +39,5 @@ In **Settings → Pages**, set the publishing source to **GitHub Actions** if it
 - The intro is silent by design; there is no forced audio playback.
 - Motion responds to `prefers-reduced-motion`.
 - Project repository links point to the public PauzeControl and PauzeWeather repositories. PauzePulse remains labeled as an in-progress lab project.
+
+[![devs.surf](https://devs.surf/badges/subdomain.svg)](https://pauzex.devs.surf)
