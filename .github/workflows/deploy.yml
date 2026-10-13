@@ -34,6 +34,9 @@ jobs:
         with:
           enablement: true
 
+      - name: Validate JavaScript syntax
+        run: node --check script.js
+
       - name: Prepare static site
         run: |
           mkdir -p _site
