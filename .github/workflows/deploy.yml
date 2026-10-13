@@ -41,6 +41,7 @@ jobs:
         run: |
           mkdir -p _site
           cp index.html styles.css script.js .nojekyll _site/
+          if [ -d .well-known ]; then mkdir -p _site/.well-known && cp -R .well-known/. _site/.well-known/; fi
 
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v4
