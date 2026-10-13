@@ -1,3 +1,7 @@
+> **Copyright © 2026 Aarav Singh / PauzeDevs. All rights reserved.**
+>
+> **VIEW ONLY — DO NOT COPY, MODIFY, REDISTRIBUTE, OR REUSE** any part of this project without prior written permission. Public visibility on GitHub does not grant a reuse licence.
+
 # PauzeX Developments Website
 
 A warm, editorial, motion-led website for **PauzeX Developments**. The experience uses a cinematic intro, kinetic typography, ambient canvas details, scroll reveals, and custom artwork for selected projects.
