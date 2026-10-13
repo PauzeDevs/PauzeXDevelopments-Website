@@ -9,6 +9,9 @@
   const mobileNav = document.getElementById("mobile-nav");
   const meterFill = document.getElementById("scroll-meter-fill");
   const cursorGlow = document.getElementById("cursor-glow");
+  const skipLink = document.getElementById("skip-link");
+  const mainContent = document.getElementById("main");
+  const inertSections = [document.getElementById("site-header"), mainContent, document.querySelector(".site-footer")].filter(Boolean);
   const hero = document.querySelector(".hero");
   const heroArt = document.querySelector(".hero-art");
   const canvas = document.getElementById("ambient-canvas");
@@ -29,6 +32,7 @@
       intro.remove();
       body.classList.remove("is-loading");
       body.classList.add("site-entered");
+      inertSections.forEach((section) => section.removeAttribute("inert"));
       return;
     }
     intro.classList.add("is-exiting");
@@ -36,6 +40,7 @@
       if (intro.isConnected) intro.remove();
       body.classList.remove("is-loading");
       body.classList.add("site-entered");
+      inertSections.forEach((section) => section.removeAttribute("inert"));
     };
     intro.addEventListener("transitionend", (event) => {
       if (event.target === intro && event.propertyName === "clip-path") complete();
@@ -44,6 +49,12 @@
   }
 
   enterButton?.addEventListener("click", () => finishIntro(false));
+  skipLink?.addEventListener("click", (event) => {
+    if (!intro || !intro.isConnected) return;
+    event.preventDefault();
+    finishIntro(true);
+    window.setTimeout(() => mainContent?.focus({ preventScroll: true }), 0);
+  });
   skipIntro?.addEventListener("click", () => finishIntro(true));
 
   // A reduced-motion preference bypasses the cinematic cover automatically.
@@ -228,6 +239,7 @@
     if (!intro || !intro.isConnected) {
       body.classList.remove("is-loading");
       body.classList.add("site-entered");
+      inertSections.forEach((section) => section.removeAttribute("inert"));
     }
   });
 })();
