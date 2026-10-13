@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f2e5d8">
+  <meta name="description" content="PauzeX Developments builds thoughtful software, creative tools, and interactive digital experiences.">
+  <meta property="og:title" content="PauzeX Developments — Digital, with feeling.">
+  <meta property="og:description" content="Thoughtful software, creative tools, and digital experiences made to feel different.">
+  <meta property="og:type" content="website">
+  <title>PauzeX Developments — Digital, with feeling.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./script.js" defer></script>
+</head>
+<body class="is-loading">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="scroll-meter" aria-hidden="true"><span id="scroll-meter-fill"></span></div>
+
+  <div class="intro" id="intro" aria-label="Website introduction">
+    <div class="intro-grain" aria-hidden="true"></div>
+    <div class="intro-topline">
+      <span>PAUZEX DEVELOPMENTS</span>
+      <span>AN INDEPENDENT DIGITAL STUDIO</span>
+    </div>
+    <div class="intro-composition">
+      <div class="intro-orb" aria-hidden="true">
+        <span class="orb-ring orb-ring--one"></span>
+        <span class="orb-ring orb-ring--two"></span>
+        <span class="orb-pebble orb-pebble--one"></span>
+        <span class="orb-pebble orb-pebble--two"></span>
+      </div>
+      <p class="intro-kicker">A LITTLE LESS ORDINARY</p>
+      <h1 class="intro-title"><span>Digital,</span><span class="intro-title__second">with <em>feeling.</em></span></h1>
+      <p class="intro-caption">SOFTWARE · DESIGN · INTERACTION</p>
+    </div>
+    <div class="intro-bottomline">
+      <span>MADE WITH INTENTION</span>
+      <button class="enter-button" id="enter-button" type="button">
+        <span>Enter experience</span><span class="enter-button__arrow" aria-hidden="true">↗</span>
+      </button>
+      <button class="skip-intro" id="skip-intro" type="button">Skip intro</button>
+    </div>
+    <div class="intro-index" aria-hidden="true">PX—01</div>
+  </div>
+
+  <header class="site-header" id="site-header">
+    <a class="wordmark" href="#home" aria-label="PauzeX Developments home">
+      <span class="wordmark__dot" aria-hidden="true"></span>
+      <span>PauzeX <small>Developments</small></span>
+    </a>
+    <nav class="desktop-nav" aria-label="Main navigation">
+      <a href="#studio">Studio</a>
+      <a href="#work">Selected work</a>
+      <a href="#services">What we do</a>
+    </nav>
+    <a class="header-contact" href="#contact">Let's talk <span aria-hidden="true">↗</span></a>
+    <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open navigation">
+      <span></span><span></span>
+    </button>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation" hidden>
+      <a href="#studio">Studio <span>01</span></a>
+      <a href="#work">Selected work <span>02</span></a>
+      <a href="#services">What we do <span>03</span></a>
+      <a href="#contact">Contact <span>04</span></a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero section-shell" id="home" aria-labelledby="hero-title">
+      <canvas class="ambient-canvas" id="ambient-canvas" aria-hidden="true"></canvas>
+      <div class="hero-copy">
+        <p class="eyebrow reveal"><span class="eyebrow__line"></span> SOFTWARE · CREATIVE TECHNOLOGY · PLAY</p>
+        <h2 class="hero-title" id="hero-title">
+          <span class="hero-title__line reveal">We make</span>
+          <span class="hero-title__line hero-title__line--second reveal">digital <em>feel</em></span>
+          <span class="hero-title__line hero-title__line--last reveal">different<span class="period">.</span></span>
+        </h2>
+        <p class="hero-description reveal">Useful software, thoughtful interfaces, and interactive experiences—with curiosity in the process and care in every detail.</p>
+        <div class="hero-actions reveal">
+          <a class="button button--dark" href="#work">Explore our work <span aria-hidden="true">↘</span></a>
+          <a class="text-link" href="#studio">Get to know us <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+      <div class="hero-art" aria-label="Abstract animated sculpture, representing ideas taking shape">
+        <div class="hero-art__halo"></div>
+        <div class="hero-art__orbit hero-art__orbit--one"></div>
+        <div class="hero-art__orbit hero-art__orbit--two"></div>
+        <div class="hero-art__orb">
+          <span class="hero-art__highlight"></span>
+          <span class="hero-art__crease"></span>
+        </div>
+        <div class="hero-art__satellite hero-art__satellite--one"></div>
+        <div class="hero-art__satellite hero-art__satellite--two"></div>
+        <div class="hero-art__label hero-art__label--top">IDEAS IN MOTION <span>✳</span></div>
+        <div class="hero-art__label hero-art__label--bottom"><span>01 / 04</span> STILL BECOMING</div>
+        <svg class="hero-wave" viewBox="0 0 520 100" role="presentation" aria-hidden="true">
+          <path d="M2 52 C24 52 24 52 38 52 S57 23 72 52 S97 82 112 52 S137 15 152 52 S177 70 192 52 S217 35 232 52 S257 90 272 52 S297 10 312 52 S337 67 352 52 S377 40 392 52 S417 77 432 52 S457 29 472 52 S497 52 518 52"></path>
+        </svg>
+      </div>
+      <div class="hero-foot reveal">
+        <span>INDEPENDENT BY NATURE</span>
+        <a href="#studio" class="scroll-cue"><span class="scroll-cue__wheel"></span> Scroll to discover</a>
+        <span class="hero-foot__right">BUILT TO BE FELT.</span>
+      </div>
+      <div class="hero-side-note" aria-hidden="true">DESIGN IT. BUILD IT. MAKE IT MATTER.</div>
+    </section>
+
+    <div class="marquee-band" aria-label="Our approach">
+      <div class="marquee-track" aria-hidden="true">
+        <span>Curiosity first</span><i>✳</i><span>Code with care</span><i>✳</i><span>Made to move</span><i>✳</i><span>Details matter</span><i>✳</i><span>Curiosity first</span><i>✳</i><span>Code with care</span><i>✳</i><span>Made to move</span><i>✳</i><span>Details matter</span><i>✳</i>
+      </div>
+    </div>
+
+    <section class="studio section-shell section-pad" id="studio" aria-labelledby="studio-title">
+      <div class="section-heading reveal">
+        <p class="eyebrow"><span class="eyebrow__line"></span> 01 — THE STUDIO</p>
+        <p class="section-heading__aside">SMALL DETAILS. BIG FEELINGS.</p>
+      </div>
+      <div class="studio-layout">
+        <h2 class="studio-title reveal" id="studio-title">Good software should work beautifully. <em>And feel even better.</em></h2>
+        <div class="studio-note reveal">
+          <span class="note-mark" aria-hidden="true">✳</span>
+          <p>PauzeX Developments brings software, design, and motion together to make digital things that are useful, intuitive, and a little more human.</p>
+          <p class="studio-note__small">We like ideas with personality, interfaces with purpose, and the tiny details that make people want to stay.</p>
+          <a class="text-link" href="#services">What that looks like <span aria-hidden="true">↘</span></a>
+        </div>
+      </div>
+      <div class="studio-signoff reveal">
+        <span class="signoff-line"></span>
+        <span>THOUGHTFUL BY DESIGN. PLAYFUL BY DEFAULT.</span>
+        <span class="signoff-line"></span>
+      </div>
+    </section>
+
+    <section class="work section-pad" id="work" aria-labelledby="work-title">
+      <div class="section-shell">
+        <div class="section-heading section-heading--work reveal">
+          <p class="eyebrow"><span class="eyebrow__line"></span> 02 — SELECTED WORK</p>
+          <p class="section-heading__aside">A FEW THINGS TAKING SHAPE</p>
+        </div>
+        <div class="work-title-row reveal">
+          <h2 class="section-title" id="work-title">Made in our <em>corner.</em></h2>
+          <p class="work-intro">Products, experiments, and little worlds built one good decision at a time.</p>
+        </div>
+        <div class="project-grid">
+          <article class="project-card project-card--pulse reveal">
+            <div class="project-art project-art--pulse" aria-hidden="true">
+              <div class="pulse-ring pulse-ring--outer"></div><div class="pulse-ring pulse-ring--middle"></div><div class="pulse-ring pulse-ring--inner"></div>
+              <span class="pulse-dot pulse-dot--one"></span><span class="pulse-dot pulse-dot--two"></span><span class="pulse-dot pulse-dot--three"></span>
+              <span class="project-art__index">PX—01</span><span class="project-art__mark">P.</span>
+              <div class="pulse-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            </div>
+            <div class="project-meta"><span>INTERACTIVE EXPERIENCES</span><span>IN THE LAB</span></div>
+            <div class="project-title-row"><h3>PauzePulse</h3><span class="project-arrow" aria-hidden="true">↗</span></div>
+            <p>An evolving playground for lively interactions, tactile 2D experiences, and motion that makes every moment feel responsive.</p>
+            <span class="project-status"><i></i> Being built</span>
+          </article>
+
+          <article class="project-card project-card--control reveal">
+            <div class="project-art project-art--control" aria-hidden="true">
+              <div class="control-window">
+                <div class="control-window__top"><span></span><span></span><span></span><b>CONTROL / PANEL</b></div>
+                <div class="control-window__body"><div class="control-window__sidebar"><i></i><i></i><i></i><i></i></div><div class="control-window__main"><div class="control-window__line"></div><div class="control-window__tiles"><i></i><i></i><i></i></div><div class="control-window__line control-window__line--short"></div><div class="control-window__toggle"><i></i></div></div></div>
+              </div>
+              <span class="project-art__index">PX—02</span><span class="control-stamp">CLEAR<br>CONTROL</span>
+            </div>
+            <div class="project-meta"><span>SOFTWARE / UTILITIES</span><span>PUBLIC REPOSITORY</span></div>
+            <div class="project-title-row"><h3>PauzeControl</h3><a class="project-arrow" href="https://github.com/PauzeDevs/PauzeControl" target="_blank" rel="noreferrer" aria-label="View PauzeControl on GitHub">↗</a></div>
+            <p>A focused utility shaped around clarity, practical controls, and an interface that keeps the important things in reach.</p>
+            <a class="project-link" href="https://github.com/PauzeDevs/PauzeControl" target="_blank" rel="noreferrer">Explore on GitHub <span aria-hidden="true">↗</span></a>
+          </article>
+
+          <article class="project-card project-card--weather reveal">
+            <div class="project-art project-art--weather" aria-hidden="true">
+              <div class="weather-sun"></div><div class="weather-orbit weather-orbit--one"></div><div class="weather-orbit weather-orbit--two"></div>
+              <div class="weather-rain weather-rain--one"></div><div class="weather-rain weather-rain--two"></div><div class="weather-rain weather-rain--three"></div>
+              <span class="project-art__index">PX—03</span><span class="weather-temp">24°<small>FIELD NOTES</small></span>
+              <div class="weather-bottom"><span>SKY / DATA</span><span>↗</span><span>RADAR / MAPS</span></div>
+            </div>
+            <div class="project-meta"><span>WEATHER / DATA</span><span>PUBLIC REPOSITORY</span></div>
+            <div class="project-title-row"><h3>PauzeWeather</h3><a class="project-arrow" href="https://github.com/PauzeX-Developments/PauzeWeatherDeveloped" target="_blank" rel="noreferrer" aria-label="View PauzeWeather on GitHub">↗</a></div>
+            <p>Weather, radar, and map layers brought into a focused experience designed to make changing conditions easier to read.</p>
+            <a class="project-link" href="https://github.com/PauzeX-Developments/PauzeWeatherDeveloped" target="_blank" rel="noreferrer">Explore on GitHub <span aria-hidden="true">↗</span></a>
+          </article>
+        </div>
+        <div class="work-foot reveal"><span>THE WORK IS ALWAYS IN PROGRESS.</span><span>MORE SOON <span aria-hidden="true">↘</span></span></div>
+      </div>
+    </section>
+
+    <section class="services section-shell section-pad" id="services" aria-labelledby="services-title">
+      <div class="section-heading reveal">
+        <p class="eyebrow"><span class="eyebrow__line"></span> 03 — WHAT WE DO</p>
+        <p class="section-heading__aside">FROM FIRST SKETCH TO FINAL FRAME</p>
+      </div>
+      <div class="services-intro reveal">
+        <h2 class="section-title" id="services-title">Different disciplines.<br><em>One point of view.</em></h2>
+        <p>We care about the whole experience—not just the code, not just the visuals, but how everything comes together.</p>
+      </div>
+      <div class="service-list">
+        <article class="service-row reveal"><span class="service-number">01</span><div><h3>Software &amp; products</h3><p>Useful tools, apps, and digital products built around real problems and clear thinking.</p></div><span class="service-symbol" aria-hidden="true">↗</span></article>
+        <article class="service-row reveal"><span class="service-number">02</span><div><h3>Interaction &amp; motion</h3><p>Responsive interfaces, scroll-led storytelling, and motion with a reason to exist.</p></div><span class="service-symbol" aria-hidden="true">↗</span></article>
+        <article class="service-row reveal"><span class="service-number">03</span><div><h3>Creative development</h3><p>Experiments at the intersection of code, visual culture, and the occasional strange idea.</p></div><span class="service-symbol" aria-hidden="true">↗</span></article>
+        <article class="service-row reveal"><span class="service-number">04</span><div><h3>Polish &amp; experience</h3><p>Performance, accessibility, and the small finishing touches that make a product feel complete.</p></div><span class="service-symbol" aria-hidden="true">↗</span></article>
+      </div>
+    </section>
+
+    <section class="closing section-pad" id="contact" aria-labelledby="closing-title">
+      <div class="closing-noise" aria-hidden="true"></div>
+      <div class="closing-content section-shell">
+        <p class="eyebrow reveal"><span class="eyebrow__line"></span> 04 — YOUR TURN</p>
+        <h2 id="closing-title" class="closing-title reveal">Got an idea that<br>won't <em>sit still?</em></h2>
+        <p class="closing-description reveal">The interesting things usually start as a little “what if?”. Find us on GitHub and see what's taking shape.</p>
+        <a class="button button--light reveal" href="https://github.com/PauzeDevs" target="_blank" rel="noreferrer">Find us on GitHub <span aria-hidden="true">↗</span></a>
+        <div class="closing-orbit closing-orbit--one" aria-hidden="true"></div><div class="closing-orbit closing-orbit--two" aria-hidden="true"></div><div class="closing-spark" aria-hidden="true">✳</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__top">
+      <a class="footer-wordmark" href="#home">PauzeX <em>Developments</em></a>
+      <p>Building a calmer, more curious digital world.</p>
+      <a class="back-to-top" href="#home">Back to top <span aria-hidden="true">↑</span></a>
+    </div>
+    <div class="site-footer__bottom"><span>© <span id="year">2026</span> PAUZEX DEVELOPMENTS</span><span>MADE WITH INTENTION <i aria-hidden="true">✳</i></span><a href="https://github.com/PauzeDevs" target="_blank" rel="noreferrer">GITHUB ↗</a></div>
+  </footer>
+  <div class="cursor-glow" id="cursor-glow" aria-hidden="true"></div>
+</body>
+</html>
