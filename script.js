@@ -248,4 +248,215 @@ All rights reserved. Viewing this source on GitHub does not grant permission to 
       inertSections.forEach((section) => section.removeAttribute("inert"));
     }
   });
+
+  // Project directory filtering and search.
+  const projectCards = [...document.querySelectorAll(".project-card[data-category][data-repo]")];
+  const projectSearch = document.getElementById("project-search");
+  const projectFilters = [...document.querySelectorAll(".project-filter[data-filter]")];
+  const projectCount = document.getElementById("project-count");
+  const activityList = document.getElementById("activity-list");
+  let activeProjectFilter = "all";
+
+  function filterProjects() {
+    const query = (projectSearch?.value || "").trim().toLocaleLowerCase();
+    let visible = 0;
+    projectCards.forEach((card) => {
+      const categoryMatch = activeProjectFilter === "all" || card.dataset.category === activeProjectFilter;
+      const queryMatch = !query || card.textContent.toLocaleLowerCase().includes(query) || card.dataset.repo.toLocaleLowerCase().includes(query);
+      card.hidden = !(categoryMatch && queryMatch);
+      if (!card.hidden) visible += 1;
+    });
+    if (projectCount) projectCount.textContent = visible + (visible === 1 ? " project" : " projects");
+    let empty = document.getElementById("project-empty");
+    if (!empty && projectCards.length) {
+      empty = document.createElement("p");
+      empty.id = "project-empty";
+      empty.className = "project-empty";
+      empty.textContent = "No projects match that search. Try another term or clear the filter.";
+      empty.hidden = true;
+      projectCards[0].parentElement?.insertAdjacentElement("afterend", empty);
+    }
+    if (empty) empty.hidden = visible !== 0;
+  }
+
+  projectFilters.forEach((button) => button.addEventListener("click", () => {
+    activeProjectFilter = button.dataset.filter || "all";
+    projectFilters.forEach((item) => {
+      const selected = item === button;
+      item.classList.toggle("is-active", selected);
+      item.setAttribute("aria-pressed", String(selected));
+    });
+    filterProjects();
+  }));
+  projectSearch?.addEventListener("input", filterProjects);
+  filterProjects();
+
+  // GitHub API values are rendered as text; failure never blocks the project links.
+  const githubHeaders = { Accept: "application/vnd.github+json" };
+  const dateFormatter = new Intl.DateTimeFormat(undefined, { year: "numeric", month: "short", day: "numeric" });
+
+  function safeGitHubUrl(value) {
+    try {
+      const url = new URL(value);
+      return url.protocol === "https:" && url.hostname === "github.com" ? url.href : "";
+    } catch {
+      return "";
+    }
+  }
+
+  function readableDate(value) {
+    const date = new Date(value);
+    return value && !Number.isNaN(date.getTime()) ? dateFormatter.format(date) : "date unavailable";
+  }
+
+  async function getGitHubJson(url) {
+    const response = await fetch(url, { headers: githubHeaders });
+    if (!response.ok) throw new Error("GitHub API returned " + response.status);
+    return response.json();
+  }
+
+  function addMeta(target, label, value) {
+    const item = document.createElement("span");
+    item.className = "repo-meta-item";
+    const key = document.createElement("span");
+    key.className = "repo-meta-label";
+    key.textContent = label;
+    const val = document.createElement("strong");
+    val.textContent = value;
+    item.append(key, val);
+    target.append(item);
+  }
+
+  function renderRepoMeta(card, info) {
+    const target = card.querySelector("[data-repo-meta]");
+    if (!target) return;
+    target.replaceChildren();
+    if (info.language) addMeta(target, "Language", info.language);
+    addMeta(target, "Stars", new Intl.NumberFormat().format(info.stargazers_count || 0));
+    addMeta(target, "Updated", readableDate(info.pushed_at || info.updated_at));
+    const url = safeGitHubUrl(info.html_url);
+    if (url) {
+      const link = document.createElement("a");
+      link.className = "repo-meta-link";
+      link.href = url;
+      link.target = "_blank";
+      link.rel = "noreferrer";
+      link.textContent = "Source ↗";
+      target.append(link);
+    }
+  }
+
+  async function renderLatestRelease(card, repoPath) {
+    const target = card.querySelector("[data-repo-release]");
+    if (!target) return;
+    try {
+      const release = await getGitHubJson("https://api.github.com/repos/" + repoPath + "/releases/latest");
+      target.replaceChildren();
+      const label = document.createElement("span");
+      label.className = "release-label";
+      label.textContent = "LATEST RELEASE";
+      target.append(label);
+      const url = safeGitHubUrl(release.html_url);
+      if (url) {
+        const link = document.createElement("a");
+        link.href = url;
+        link.target = "_blank";
+        link.rel = "noreferrer";
+        link.textContent = release.name || release.tag_name || "View release";
+        target.append(link);
+      } else {
+        target.append(document.createTextNode(release.name || release.tag_name || "Published release"));
+      }
+      if (release.published_at) {
+        const time = document.createElement("time");
+        time.dateTime = release.published_at;
+        time.textContent = readableDate(release.published_at);
+        target.append(time);
+      }
+    } catch (error) {
+      target.replaceChildren();
+      const label = document.createElement("span");
+      label.className = "release-label";
+      label.textContent = "RELEASES";
+      const message = document.createElement("span");
+      message.textContent = error.message.includes("404") ? "No public release published yet" : "Release details unavailable";
+      target.append(label, message);
+    }
+  }
+
+  async function fetchLatestCommit(card) {
+    const repoPath = card.dataset.repo;
+    const commits = await getGitHubJson("https://api.github.com/repos/" + repoPath + "/commits?per_page=1");
+    const commit = Array.isArray(commits) ? commits[0] : null;
+    if (!commit?.commit) throw new Error("No public commits returned");
+    return {
+      name: card.querySelector("h3")?.textContent?.trim() || repoPath.split("/").pop(),
+      message: (commit.commit.message || "Commit message unavailable").split("\n")[0],
+      date: commit.commit.author?.date || commit.commit.committer?.date || "",
+      url: safeGitHubUrl(commit.html_url)
+    };
+  }
+
+  function renderActivity(entries) {
+    if (!activityList) return;
+    activityList.replaceChildren();
+    entries.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    if (!entries.length) {
+      const state = document.createElement("p");
+      state.className = "activity-state";
+      state.textContent = "GitHub activity is unavailable right now. Open a repository directly to inspect recent work.";
+      activityList.append(state);
+      return;
+    }
+    entries.forEach((entry) => {
+      const row = document.createElement("article");
+      row.className = "activity-item";
+      const mark = document.createElement("span");
+      mark.className = "activity-mark";
+      mark.setAttribute("aria-hidden", "true");
+      mark.textContent = "↗";
+      const details = document.createElement("div");
+      details.className = "activity-details";
+      const project = document.createElement("span");
+      project.className = "activity-project";
+      project.textContent = entry.name;
+      const message = document.createElement("p");
+      message.textContent = entry.message;
+      details.append(project, message);
+      const meta = document.createElement("div");
+      meta.className = "activity-meta";
+      const time = document.createElement("time");
+      time.textContent = readableDate(entry.date);
+      if (entry.date) time.dateTime = entry.date;
+      meta.append(time);
+      if (entry.url) {
+        const link = document.createElement("a");
+        link.href = entry.url;
+        link.target = "_blank";
+        link.rel = "noreferrer";
+        link.textContent = "Commit";
+        link.setAttribute("aria-label", "View commit for " + entry.name);
+        meta.append(link);
+      }
+      row.append(mark, details, meta);
+      activityList.append(row);
+    });
+  }
+
+  if (projectCards.length) {
+    const activityRequests = projectCards.map((card) => fetchLatestCommit(card).catch(() => null));
+    const metadataRequests = projectCards.map(async (card) => {
+      try {
+        const info = await getGitHubJson("https://api.github.com/repos/" + card.dataset.repo);
+        renderRepoMeta(card, info);
+      } catch {
+        const target = card.querySelector("[data-repo-meta]");
+        if (target) target.textContent = "Live repository details unavailable";
+      }
+      await renderLatestRelease(card, card.dataset.repo);
+    });
+    Promise.all(activityRequests).then((items) => renderActivity(items.filter(Boolean)));
+    Promise.all(metadataRequests).catch(() => {});
+  }
+
 })();
