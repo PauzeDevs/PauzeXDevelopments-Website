@@ -216,12 +216,32 @@ All rights reserved. Viewing this source on GitHub does not grant permission to 
   async function renderLatestRelease(card, repoPath) {
     const target = card.querySelector("[data-repo-release]");
     if (!target) return;
+
     try {
-      const release = await getGitHubJson("https://api.github.com/repos/" + repoPath + "/releases/latest");
+      let release;
+      try {
+        // GitHub's /releases/latest endpoint intentionally excludes prereleases.
+        release = await getGitHubJson("https://api.github.com/repos/" + repoPath + "/releases/latest");
+      } catch (error) {
+        if (!error.message.includes("404")) throw error;
+        const releases = await getGitHubJson("https://api.github.com/repos/" + repoPath + "/releases?per_page=10");
+        release = Array.isArray(releases) ? releases.find((item) => !item.draft) : null;
+        if (!release) {
+          target.replaceChildren();
+          const label = document.createElement("span");
+          label.className = "release-label";
+          label.textContent = "RELEASES";
+          const message = document.createElement("span");
+          message.textContent = "No public release published yet";
+          target.append(label, message);
+          return;
+        }
+      }
+
       target.replaceChildren();
       const label = document.createElement("span");
       label.className = "release-label";
-      label.textContent = "LATEST RELEASE";
+      label.textContent = release.prerelease ? "BETA / PRE-RELEASE" : "LATEST RELEASE";
       target.append(label);
       const url = safeGitHubUrl(release.html_url);
       if (url) {
@@ -240,17 +260,16 @@ All rights reserved. Viewing this source on GitHub does not grant permission to 
         time.textContent = readableDate(release.published_at);
         target.append(time);
       }
-    } catch (error) {
+    } catch {
       target.replaceChildren();
       const label = document.createElement("span");
       label.className = "release-label";
       label.textContent = "RELEASES";
       const message = document.createElement("span");
-      message.textContent = error.message.includes("404") ? "No public release published yet" : "Release details unavailable";
+      message.textContent = "Release details unavailable";
       target.append(label, message);
     }
   }
-
   async function fetchLatestCommit(card) {
     const repoPath = card.dataset.repo;
     const commits = await getGitHubJson("https://api.github.com/repos/" + repoPath + "/commits?per_page=1");
