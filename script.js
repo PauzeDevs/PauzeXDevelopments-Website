@@ -329,9 +329,29 @@ All rights reserved. Viewing this source on GitHub does not grant permission to 
     });
   }
 
+  function renderPrivateRepositoryState(card) {
+    const meta = card.querySelector("[data-repo-meta]");
+    if (meta) meta.textContent = "Private repository details require access";
+
+    const release = card.querySelector("[data-repo-release]");
+    if (release) {
+      const label = document.createElement("span");
+      label.className = "release-label";
+      label.textContent = "RELEASES";
+      const message = document.createElement("span");
+      message.textContent = "Details require repository access";
+      release.replaceChildren(label, message);
+    }
+  }
+
   if (projectCards.length) {
-    const activityRequests = projectCards.map((card) => fetchLatestCommit(card).catch(() => null));
-    const metadataRequests = projectCards.map(async (card) => {
+    const publicProjectCards = projectCards.filter((card) => card.dataset.repoVisibility !== "private");
+    projectCards
+      .filter((card) => card.dataset.repoVisibility === "private")
+      .forEach(renderPrivateRepositoryState);
+
+    const activityRequests = publicProjectCards.map((card) => fetchLatestCommit(card).catch(() => null));
+    const metadataRequests = publicProjectCards.map(async (card) => {
       try {
         const info = await getGitHubJson("https://api.github.com/repos/" + card.dataset.repo);
         renderRepoMeta(card, info);
