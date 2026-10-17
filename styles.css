@@ -1111,3 +1111,9 @@ body {
 }
 
 .project-filter.is-active span { color: rgba(20, 32, 22, .7); }
+
+/* Keep the projects section within the forest theme instead of the former cream paper palette. */
+.work {
+  color: var(--ink);
+  background: var(--paper-deep);
+}
