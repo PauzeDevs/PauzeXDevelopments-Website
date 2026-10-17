@@ -1109,3 +1109,5 @@ body {
   .hero::before,
   .hero::after { animation: none; }
 }
+
+.project-filter.is-active span { color: rgba(20, 32, 22, .7); }
