@@ -1112,12 +1112,6 @@ body {
 
 .project-filter.is-active span { color: rgba(20, 32, 22, .7); }
 
-/* Keep the projects section within the forest theme instead of the former cream paper palette. */
-.work {
-  color: var(--ink);
-  background: var(--paper-deep);
-}
-
 /* Add a restrained moving forest glow behind project content without washing out text. */
 .work {
   position: relative;
