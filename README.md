@@ -22,7 +22,7 @@ ALL RIGHTS RESERVED. View-only source; no reuse without prior written permission
 
 PauzeX Developments is an independent software studio for apps, developer tools, web experiences, and technical experiments. This repository contains the studio's public-facing website.
 
-The site follows the same principle as the projects it presents: keep the experience purposeful, make interactions useful, and avoid unnecessary dependencies. Its featured software directory includes PauzeNews, PauzeControl, PauzeWeather, and PauzePulse, with live GitHub details for public repositories and clearly marked private project cards.
+The site follows the same principle as the projects it presents: keep the experience purposeful, make interactions useful, and avoid unnecessary dependencies. Its featured software directory includes PauzeNews, PauzeControl, PauzeWeather, PauzePulse, and Auralis TV, with live GitHub details for public repositories and clearly marked private project cards.
 
 **[Open the live website ↗](https://pauzex.devs.surf/)**
 
@@ -34,7 +34,7 @@ The site follows the same principle as the projects it presents: keep the experi
 | --- | --- |
 | **Intro & home** | A short entrance screen, studio message, and primary navigation. |
 | **Studio** | Explains the team's approach to building, testing, and iteration. |
-| **Projects** | Searchable project cards for four featured software projects, category filters, live details for public repositories, access notices for private projects, CI links, and recent public activity from GitHub. |
+| **Projects** | Searchable project cards for five featured software projects, category filters, live details for public repositories, access notices for private projects, CI links, and recent public activity from GitHub. |
 | **Engineering** | Summarises application development, frontend work, APIs, integrations, quality, and maintenance. |
 | **Contact** | Provides the closing message and contact route. |
 
@@ -47,6 +47,7 @@ The layout is responsive, the navigation supports mobile screens, and motion-sen
 | [PauzePulse](https://github.com/PauzeDevs/PauzePulse) | Private repository — interactive gameplay, distinct scenes, and 2D animation. |
 | [PauzeControl](https://github.com/PauzeDevs/PauzeControl) | Mac-to-Android remote control and screen streaming. |
 | [PauzeWeather](https://github.com/PauzeDevs/PauzeWeather) | Private repository — Android weather forecasts, alerts, air quality, radar, and cached data. |
+| [Auralis TV](https://github.com/PauzeDevs/Auralis-TV/tree/Auralis) | Remote-first Android TV launcher with a local per-profile watchlist, film discovery, voice search, Control Center, and ambient screen. It does not stream titles or sync cross-app playback progress. |
 | [PauzeNews](https://github.com/PauzeDevs/PauzeNews) | Android-first Python/Kivy news reader with topic-based RSS feeds, publisher attribution, local search, SQLite bookmarks, offline-friendly caching, and official APK releases. |
 
 ## Code map
