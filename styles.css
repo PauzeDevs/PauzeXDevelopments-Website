@@ -1111,34 +1111,3 @@ body {
 }
 
 .project-filter.is-active span { color: rgba(20, 32, 22, .7); }
-
-/* Add a restrained moving forest glow behind project content without washing out text. */
-.work {
-  position: relative;
-  isolation: isolate;
-  color: var(--ink);
-  background: var(--paper-deep);
-}
-.work::before {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(ellipse at 14% 22%, rgba(196, 230, 108, .11), transparent 38%),
-    radial-gradient(ellipse at 84% 68%, rgba(65, 112, 73, .18), transparent 42%);
-  transform: scale(1.015);
-  animation: pauzex-work-aurora 32s ease-in-out infinite alternate;
-}
-.work > .section-shell {
-  position: relative;
-  z-index: 1;
-}
-@keyframes pauzex-work-aurora {
-  from { transform: translate3d(-.6%, 0, 0) scale(1.015); }
-  to { transform: translate3d(.6%, -1%, 0) scale(1.035); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .work::before { animation: none; }
-}
