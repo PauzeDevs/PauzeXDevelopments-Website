@@ -65,6 +65,7 @@ jobs:
           }
           if (!html.includes('class="project-tools"')) throw new Error("Project filters container missing.");
           if (!html.includes('<link rel="canonical" href="https://pauzex.devs.surf/">')) throw new Error("Canonical URL missing.");
+          if (!html.includes('px-hero-3d.css?v=20261031.17')) throw new Error("Hero CSS cache version was not refreshed.");
           const refs = [...html.matchAll(new RegExp(String.raw`(?:src|href)=["']([^"']+)["']`, "g"))]
             .map(match => match[1]).filter(ref => ref.startsWith("./"));
           const missing = [...new Set(refs)].filter(ref => !fs.existsSync(path.join("_site", ref.slice(2).split(/[?#]/)[0])));
