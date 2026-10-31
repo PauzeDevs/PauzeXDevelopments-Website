@@ -76,7 +76,7 @@ jobs:
           if (!templeRenderer.includes('three@0.149.0/build/three.module.js')) throw new Error("Temple Night Three.js runtime is not pinned.");
           if (!fs.existsSync("_site/THREEUI-LICENSE.md")) throw new Error("Third-party MIT attribution is missing from the deployed artifact.");
           if (fs.readFileSync("_site/CNAME", "utf8").trim() !== "pauzex.devs.surf") throw new Error("Custom domain CNAME is missing or incorrect.");
-          if (!html.includes('px-hero-3d.js?v=20261031.13')) throw new Error("Hero asset cache version was not refreshed.");
+          if (!html.includes('px-hero-3d.js?v=20261031.14')) throw new Error("Hero asset cache version was not refreshed.");
           console.log("Validated " + refs.length + " local asset references, " + scripts.length + " page scripts, Temple Night wiring, Three.js pin, and MIT attribution.");
           NODE
 
