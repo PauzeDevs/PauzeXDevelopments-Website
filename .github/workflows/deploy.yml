@@ -58,7 +58,7 @@ jobs:
           const fs = require("node:fs");
           const path = require("node:path");
           const html = fs.readFileSync("_site/index.html", "utf8");
-          const refs = [...html.matchAll(/\\b(?:src|href)=["'](\\.\\/[^"'?#]+)(?:[?#][^"']*)?["']/g)];
+          const refs = [...html.matchAll(/\b(?:src|href)=["'](\.\\/[^"'?#]+)(?:[?#][^"']*)?["']/g)];
           const missing = refs
             .map(match => match[1])
             .filter((ref, index, all) => all.indexOf(ref) === index)
@@ -67,7 +67,7 @@ jobs:
             console.error("Missing local site assets:", missing.join(", "));
             process.exit(1);
           }
-          const scripts = refs.map(match => match[1]).filter(ref => /\\.m?js$/.test(ref));
+          const scripts = refs.map(match => match[1]).filter(ref => /\.m?js$/.test(ref));
           if (!scripts.length) throw new Error("No local JavaScript bundles are referenced.");
           const heroRuntime = fs.readFileSync("_site/px-hero-3d.js", "utf8");
           const templeRenderer = fs.readFileSync("_site/templeNightRenderer.js", "utf8");
