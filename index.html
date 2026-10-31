@@ -39,7 +39,21 @@ All rights reserved. Viewing this source on GitHub does not grant permission to 
   <script src="./scroll-reveal.js?v=20261031.15" defer></script>
   <script src="./cookie-preferences.js?v=20261031.15" defer></script>
 </head>
-<body class="is-loading">
+<body class="is-loading px-verify-locked">
+  <section id="px-verify-gate" role="dialog" aria-modal="true" aria-labelledby="px-verify-title">
+    <div class="px-verify-card">
+      <div class="px-verify-brand"><span class="px-verify-mark">PX</span><span><strong>PAUZEX SECURITY</strong><small>VISITOR VERIFICATION</small></span></div>
+      <p class="px-verify-kicker">A QUICK SECURITY CHECK</p>
+      <h1 id="px-verify-title">Let's make sure it's you.</h1>
+      <p class="px-verify-copy">Complete this quick check to continue to PauzeX Developments.</p>
+      <label class="px-verify-check"><input id="px-verify-human" type="checkbox"><span>I'm here to browse PauzeX</span></label>
+      <button class="px-verify-action" id="px-verify-primary" type="button">Continue</button>
+      <div class="px-verify-extra" id="px-verify-extra" hidden><p id="px-verify-prompt">Complete the extra check.</p><div class="px-verify-options" id="px-verify-options"></div></div>
+      <p class="px-verify-status" id="px-verify-status" role="status" aria-live="polite"></p>
+      <div class="px-verify-foot">PAUZEX · SECURITY LAYER 01</div>
+    </div>
+  </section>
+
   <a class="skip-link" id="skip-link" href="#main">Skip to content</a>
   <div class="scroll-meter" aria-hidden="true"><span id="scroll-meter-fill"></span></div>
 
