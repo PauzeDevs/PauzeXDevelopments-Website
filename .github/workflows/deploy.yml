@@ -76,7 +76,7 @@ jobs:
           if (!html.includes('id="px-verify-gate"')) throw new Error("PauzeX Verify gate markup is missing.");
           const mainScript = fs.readFileSync("_site/script.js", "utf8");
           const mainStyles = fs.readFileSync("_site/styles.css", "utf8");
-          if (!mainScript.includes("px_visit_count_v2") || !mainScript.includes("issueChallenge")) throw new Error("Bundled PauzeX Verify logic or challenge is missing.");
+          if (!mainScript.includes("px_visit_count_v2") || !mainScript.includes("px-verify-options")) throw new Error("Bundled PauzeX Verify logic or challenge is missing.");
           if (!mainStyles.includes("#px-verify-gate")) throw new Error("Bundled PauzeX Verify styling is missing.");
           if (html.includes("pauzex-verify.js") || html.includes("pauzex-verify.css")) throw new Error("Standalone verification asset reference remains.");
           const attrPattern = new RegExp(String.raw`(?:src|href)=["']([^"']+)["']`, "g");
