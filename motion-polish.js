@@ -10,13 +10,9 @@
   const navLinks = [...document.querySelectorAll('.desktop-nav a[href^="#"]')];
   const sections = navLinks.map(link => document.querySelector(link.getAttribute("href"))).filter(Boolean);
 
-  // Compact header treatment and active-section navigation.
-  const updateHeader = () => {
-    if (header) header.classList.toggle("is-scrolled", window.scrollY > 24);
-  };
-  updateHeader();
-  window.addEventListener("scroll", updateHeader, { passive: true });
-
+  // Active-section navigation. Scroll-linked visual work is centralized in runtime-optimizations.js.
+  const navLinks = [...document.querySelectorAll('.desktop-nav a[href^="#"]')];
+  const sections = navLinks.map(link => document.querySelector(link.getAttribute("href"))).filter(Boolean);
   if ("IntersectionObserver" in window && sections.length) {
     const sectionObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {
