@@ -38,7 +38,7 @@ jobs:
         run: |
           set -euo pipefail
           for file in ./*.js; do
-            node --check "$file"
+            node --check --input-type=module < "$file"
           done
 
       - name: Prepare and validate complete static site
