@@ -156,3 +156,23 @@ a { overflow-wrap: anywhere; }
 /* Private project cards remain visible as featured work without exposing dead repository links. */
 [data-repo-visibility="private"] .project-arrow,
 [data-repo-visibility="private"] .project-link { display: none !important; }
+
+
+/* Lightweight rendering profile for phones and touch-first devices. */
+@media (max-width: 760px), (pointer: coarse) {
+  .site-header, .mobile-nav, .studio-note, .activity-panel, .site-footer,
+  .project-card, .project-search, .project-filters, .project-arrow,
+  .service-row:hover {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  .project-card, .project-card--weather {
+    box-shadow: 0 10px 28px rgba(0,0,0,.12), inset 0 1px 0 rgba(255,255,255,.14);
+  }
+  .reveal, .reveal.is-visible {
+    filter: none !important;
+    transition: opacity .35s ease, transform .35s ease !important;
+  }
+  .studio-note, .activity-panel { will-change: auto; }
+  .hero::after, .closing-content::after { animation: none !important; }
+}
