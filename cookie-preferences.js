@@ -10,6 +10,7 @@
   const dialog = document.getElementById("cookie-dialog");
   const settingsButtons = document.querySelectorAll("[data-cookie-settings]");
   const closeButton = document.getElementById("cookie-close");
+  const closeBottomButton = document.getElementById("cookie-close-bottom");
   const saveButton = document.getElementById("cookie-save");
   const acceptButton = document.getElementById("cookie-accept");
   if (!banner || !dialog) return;
@@ -35,6 +36,7 @@
   if (!readChoice()) banner.hidden = false;
   settingsButtons.forEach(button => button.addEventListener("click", openDialog));
   closeButton?.addEventListener("click", closeDialog);
+  closeBottomButton?.addEventListener("click", closeDialog);
   dialog.addEventListener("click", event => { if (event.target === dialog) closeDialog(); });
   document.addEventListener("keydown", event => {
     if (event.key === "Escape" && !dialog.hidden) closeDialog();
