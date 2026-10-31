@@ -78,6 +78,7 @@
     renderer?.setPointer(0, 0, false);
     schedule();
   };
+  const handlePointerOut = (event) => { if (!event.relatedTarget) clearPointer(); };
 
   const onVisibilityChange = () => {
     if (document.hidden) cancelFrame();
@@ -108,7 +109,7 @@
       else window.addEventListener("resize", handleResize, { passive: true });
 
       window.addEventListener("pointermove", handlePointerMove, { passive: true });
-      window.addEventListener("pointerout", (event) => { if (!event.relatedTarget) clearPointer(); }, { passive: true });
+      window.addEventListener("pointerout", handlePointerOut, { passive: true });
       window.addEventListener("blur", clearPointer);
       document.addEventListener("visibilitychange", onVisibilityChange);
       handleResize();
@@ -162,6 +163,7 @@
     resizeObserver?.disconnect();
     window.removeEventListener("resize", handleResize);
     window.removeEventListener("pointermove", handlePointerMove);
+    window.removeEventListener("pointerout", handlePointerOut);
     window.removeEventListener("blur", clearPointer);
     document.removeEventListener("visibilitychange", onVisibilityChange);
     renderer?.dispose();
