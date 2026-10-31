@@ -1,7 +1,7 @@
 /*
   PauzeX Developments — cookie and privacy preferences.
-  No analytics or advertising cookies are currently installed. Essential local
-  storage remembers the user's acknowledgement so the notice is not repeated.
+  No analytics or advertising cookies are currently installed. The notice is
+  intentionally shown on every visit so visitors can review their choices.
 */
 (() => {
   "use strict";
@@ -53,7 +53,9 @@
     closeButton?.focus();
   };
 
-  if (!readChoice()) banner.hidden = false;
+  // Show the consent notice on every page visit, even when a previous choice exists.
+  // The saved choice remains available for the preferences UI, but never suppresses the notice.
+  banner.hidden = false;
   settingsButtons.forEach(button => button.addEventListener("click", openDialog));
   closeButton?.addEventListener("click", closeDialog);
   closeBottomButton?.addEventListener("click", closeDialog);
