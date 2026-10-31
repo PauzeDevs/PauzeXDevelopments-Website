@@ -62,8 +62,8 @@ jobs:
           const types = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".webp": "image/webp", ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg", ".woff2": "font/woff2" };
           http.createServer((req, res) => {
             const pathname = decodeURIComponent(new URL(req.url, "http://localhost").pathname);
-            const file = path.resolve(root, "." + pathname);
-            if (!file.startsWith(root + path.sep) && file !== path.join(root, "index.html")) { res.writeHead(403).end(); return; }
+            const file = pathname === "/" ? path.join(root, "index.html") : path.resolve(root, "." + pathname);
+            if (file !== path.join(root, "index.html") && !file.startsWith(root + path.sep)) { res.writeHead(403).end(); return; }
             const target = fs.existsSync(file) && fs.statSync(file).isFile() ? file : path.join(root, "index.html");
             res.setHeader("Content-Type", types[path.extname(target)] || "application/octet-stream");
             fs.createReadStream(target).pipe(res);
