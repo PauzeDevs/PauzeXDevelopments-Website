@@ -49,3 +49,22 @@ test("verification persists after reload in the same tab", async ({ page }) => {
   await page.reload();
   await expect(page.locator("#px-verify-gate")).toBeHidden();
 });
+
+test("production layout keeps overlays fixed and project tools outside the title row", async ({ page }) => {
+  await page.goto(baseURL);
+  const gate = page.locator("#px-verify-gate");
+  if (await gate.isVisible()) await solveGate(page);
+  await page.locator("#skip-intro").click().catch(() => {});
+  const positions = await page.evaluate(() => ({
+    banner: getComputedStyle(document.querySelector("#cookie-banner")).position,
+    dialog: getComputedStyle(document.querySelector("#cookie-dialog")).position,
+    skip: getComputedStyle(document.querySelector("#skip-link")).position,
+    toolsParent: document.querySelector(".project-tools")?.parentElement?.className
+  }));
+  expect(positions.banner).toBe("fixed");
+  expect(positions.dialog).toBe("fixed");
+  expect(positions.skip).toBe("fixed");
+  expect(positions.toolsParent).not.toContain("work-title-row");
+  const missingAsset = await page.request.get(baseURL + "/missing-test-asset.js");
+  expect(missingAsset.status()).toBe(404);
+});
