@@ -1,3 +1,130 @@
+
+/* PauzeX visitor check: first-party friction, not server-side access control. */
+(() => {
+  "use strict";
+  const gate = document.getElementById("px-verify-gate");
+  if (!gate) return;
+
+  const COUNT = "px_visit_count_v2";
+  const SESSION = "px_verified_session_v2";
+  const COUNTED = "px_visit_counted_v2";
+  const SESSION_TTL = 12 * 60 * 60 * 1000;
+  const $ = (id) => document.getElementById(id);
+  const status = $("px-verify-status");
+  const checkbox = $("px-verify-human");
+  const primary = $("px-verify-primary");
+  const extra = $("px-verify-extra");
+  const options = $("px-verify-options");
+  const prompt = $("px-verify-prompt");
+  const startedAt = performance.now();
+  let pointerActivity = 0;
+  let answer = -1;
+  let attempts = 0;
+
+  const safeGet = (store, key) => { try { return store.getItem(key); } catch { return null; } };
+  const safeSet = (store, key, value) => { try { store.setItem(key, value); return true; } catch { return false; } };
+  const readCount = () => {
+    const value = Number(safeGet(localStorage, COUNT));
+    return Number.isSafeInteger(value) && value >= 0 ? value : 0;
+  };
+  let visit = readCount();
+  if (safeGet(sessionStorage, COUNTED) !== "1") {
+    visit += 1;
+    safeSet(localStorage, COUNT, String(visit));
+    safeSet(sessionStorage, COUNTED, "1");
+  }
+  const sessionIsValid = () => {
+    try {
+      const record = JSON.parse(safeGet(sessionStorage, SESSION) || "null");
+      return record && record.ok === true && Number.isFinite(record.at) &&
+        Date.now() - record.at >= 0 && Date.now() - record.at < SESSION_TTL;
+    } catch { return false; }
+  };
+  const due = visit === 1 || visit % 10 === 0;
+  if (!due || sessionIsValid()) {
+    gate.hidden = true;
+    document.body.classList.remove("px-verify-locked");
+    return;
+  }
+
+  document.body.classList.add("px-verify-locked");
+  const symbols = ["◆", "●", "▲", "✦", "⬟", "✚", "☾", "✧", "⬢", "✺"];
+  const randomInt = (max) => {
+    if (window.crypto?.getRandomValues) {
+      const n = new Uint32Array(1);
+      crypto.getRandomValues(n);
+      return n[0] % max;
+    }
+    return Math.floor(Math.random() * max);
+  };
+  const complete = () => {
+    safeSet(sessionStorage, SESSION, JSON.stringify({ ok: true, at: Date.now(), visit }));
+    status.textContent = "Verified. Welcome to PauzeX.";
+    gate.classList.add("is-verified");
+    primary.disabled = true;
+    window.setTimeout(() => {
+      gate.hidden = true;
+      document.body.classList.remove("px-verify-locked");
+      $("site-header")?.removeAttribute("inert");
+      $("main")?.removeAttribute("inert");
+      document.querySelector(".site-footer")?.removeAttribute("inert");
+    }, 420);
+  };
+  const issueChallenge = () => {
+    attempts += 1;
+    const target = symbols[randomInt(symbols.length)];
+    const picks = new Set([target]);
+    while (picks.size < 4) picks.add(symbols[randomInt(symbols.length)]);
+    const choices = [...picks];
+    for (let i = choices.length - 1; i > 0; i--) {
+      const j = randomInt(i + 1);
+      [choices[i], choices[j]] = [choices[j], choices[i]];
+    }
+    answer = choices.indexOf(target);
+    prompt.textContent = "Select the matching symbol: " + target;
+    options.replaceChildren();
+    choices.forEach((symbol, index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "px-verify-option";
+      button.textContent = symbol;
+      button.setAttribute("aria-label", "Symbol option " + (index + 1));
+      button.addEventListener("click", () => {
+        if (index === answer) complete();
+        else {
+          status.textContent = "Not quite. A new challenge has been generated.";
+          issueChallenge();
+        }
+      });
+      options.append(button);
+    });
+    extra.hidden = false;
+    status.textContent = "An additional check is required.";
+  };
+  document.addEventListener("pointermove", () => { pointerActivity = Math.min(pointerActivity + 1, 20); }, { passive: true });
+  primary.addEventListener("click", () => {
+    if (!checkbox.checked) {
+      status.textContent = "Please confirm before continuing.";
+      return;
+    }
+    const elapsed = performance.now() - startedAt;
+    const suspicious = elapsed < 1100 ||
+      (pointerActivity === 0 && matchMedia("(pointer:fine)").matches) ||
+      attempts > 0;
+    if (suspicious) issueChallenge();
+    else complete();
+  });
+
+  // Detect accidental removal of the gate while the challenge is pending.
+  const observer = new MutationObserver(() => {
+    if (!gate.hidden && !gate.isConnected) {
+      document.body.classList.add("px-verify-locked");
+      status.textContent = "Verification state changed. Reload this page to continue.";
+    }
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();
+
 /*
 Copyright (c) 2026 Aarav Singh / PauzeDevs.
 
