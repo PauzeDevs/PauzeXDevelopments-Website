@@ -11,7 +11,7 @@ async function solveGate(page) {
   const targetFrom = async () => (await page.locator("#px-verify-prompt").textContent()).split(":").pop().trim();
   let target = await targetFrom();
   await options.filter({ hasNotText: target }).first().click();
-  await expect(page.locator("#px-verify-status")).toContainText("new challenge");
+  await expect(page.locator("#px-verify-status")).toContainText("additional check is required");
   target = await targetFrom();
   await options.filter({ hasText: target }).first().click();
   await expect(page.locator("#px-verify-gate")).toBeHidden();
