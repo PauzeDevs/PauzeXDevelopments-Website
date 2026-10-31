@@ -72,6 +72,14 @@ test("production layout keeps overlays fixed and project tools outside the title
   expect(positions.dialog).toBe("fixed");
   expect(positions.skip).toBe("fixed");
   expect(positions.mainPosition).toBe("relative");
+  const sectionGlass = await page.evaluate(() => ({
+    studio: getComputedStyle(document.querySelector("#studio")).backgroundColor,
+    work: getComputedStyle(document.querySelector("#work")).backgroundColor,
+    workBlur: getComputedStyle(document.querySelector("#work")).backdropFilter
+  }));
+  expect(sectionGlass.studio).toContain("0.24");
+  expect(sectionGlass.work).toContain("0.38");
+  expect(sectionGlass.workBlur).toContain("blur");
   expect(positions.mainZIndex).toBe("2");
   expect(Number(positions.heroOpacity)).toBeGreaterThan(0.95);
   expect(positions.toolsParent).not.toContain("work-title-row");
