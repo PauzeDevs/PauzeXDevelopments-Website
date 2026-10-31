@@ -1,5 +1,5 @@
 # Copyright (c) 2026 Aarav Singh / PauzeDevs.
-# 
+#
 # VIEW-ONLY SOURCE — DO NOT COPY, MODIFY, REDISTRIBUTE, OR REUSE WITHOUT PRIOR WRITTEN PERMISSION.
 # All rights reserved. Viewing this source on GitHub does not grant permission to reproduce or reuse it.
 name: Deploy PauzeX Developments website
@@ -35,14 +35,47 @@ jobs:
           enablement: true
 
       - name: Validate JavaScript syntax
-        run: node --check script.js
-
-      - name: Prepare static site
         run: |
+          set -euo pipefail
+          for file in ./*.js; do
+            node --check "$file"
+          done
+
+      - name: Prepare and validate complete static site
+        run: |
+          set -euo pipefail
           mkdir -p _site
-          cp index.html styles.css script.js .nojekyll _site/
-          if [ -d .well-known ]; then mkdir -p _site/.well-known && cp -R .well-known/. _site/.well-known/; fi
-          if [ -d assets ]; then mkdir -p _site/assets && cp -R assets/. _site/assets/; fi
+          cp -a ./*.html ./*.css ./*.js .nojekyll _site/
+          if [ -d .well-known ]; then
+            mkdir -p _site/.well-known
+            cp -R .well-known/. _site/.well-known/
+          fi
+          if [ -d assets ]; then
+            mkdir -p _site/assets
+            cp -R assets/. _site/assets/
+          fi
+          node <<'NODE'
+          const fs = require("node:fs");
+          const path = require("node:path");
+          const html = fs.readFileSync("_site/index.html", "utf8");
+          const refs = [...html.matchAll(/\b(?:src|href)=["'](\.\/[^"'?#]+)(?:[?#][^"']*)?["']/g)];
+          const missing = refs
+            .map(match => match[1])
+            .filter((ref, index, all) => all.indexOf(ref) === index)
+            .filter(ref => !fs.existsSync(path.join("_site", ref.slice(2))));
+          if (missing.length) {
+            console.error("Missing local site assets:", missing.join(", "));
+            process.exit(1);
+          }
+          const scripts = [...html.matchAll(/<script\b[^>]*\bsrc=["']\.\/([^"'?#]+)["']/g)];
+          if (!scripts.length) throw new Error("No local JavaScript bundles are referenced.");
+          for (const match of scripts) {
+            if (!fs.existsSync(path.join("_site", match[1]))) {
+              throw new Error("Missing JavaScript bundle: " + match[1]);
+            }
+          }
+          console.log("Validated " + refs.length + " local asset references and " + scripts.length + " script bundles.");
+          NODE
 
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v4
