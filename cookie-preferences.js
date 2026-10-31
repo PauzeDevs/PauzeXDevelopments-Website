@@ -62,6 +62,11 @@
   dialog.addEventListener("click", event => {
     if (event.target === dialog) closeDialog();
   });
+  document.addEventListener("focusin", event => {
+    if (dialog.hidden || dialog.contains(event.target)) return;
+    const first = dialog.querySelector(focusableSelector);
+    (first || dialog).focus({ preventScroll: true });
+  });
   document.addEventListener("keydown", event => {
     if (dialog.hidden) return;
     if (event.key === "Escape") {
@@ -69,9 +74,14 @@
       closeDialog();
       return;
     }
-    if (event.key !== "Tab") return;
     const focusable = [...dialog.querySelectorAll(focusableSelector)]
-      .filter(element => !element.closest("[hidden]") && element.getClientRects().length > 0);
+      .filter(element => !element.closest("[hidden]") && !element.closest("[inert]") && element.getClientRects().length > 0);
+    if (!dialog.contains(document.activeElement)) {
+      event.preventDefault();
+      (focusable[0] || dialog).focus();
+      return;
+    }
+    if (event.key !== "Tab") return;
     if (!focusable.length) {
       event.preventDefault();
       dialog.focus();
