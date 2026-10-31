@@ -110,7 +110,7 @@
   gate.addEventListener("keydown", (event) => {
     if (event.key !== "Tab") return;
     const focusable = [...gate.querySelectorAll('button:not(:disabled), input:not(:disabled), [href], [tabindex]:not([tabindex="-1"])')]
-      .filter((element) => !element.hidden && element.getAttribute("aria-hidden") !== "true");
+      .filter((element) => !element.hidden && !element.closest("[hidden]") && element.getAttribute("aria-hidden") !== "true");
     if (!focusable.length) { event.preventDefault(); return; }
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
