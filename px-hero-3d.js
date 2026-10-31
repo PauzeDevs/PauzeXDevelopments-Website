@@ -23,7 +23,7 @@
   let lastFrame = 0;
   let visible = false;
   let width = 0, height = 0;
-  const maxFps = coarse ? 30 : 48;
+  const maxFps = coarse ? 30 : 60;
   const frameInterval = 1000 / maxFps;
 
   const start = async () => {
@@ -44,9 +44,24 @@
         stencil: false,
         depth: true
       });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, coarse ? 1.15 : 1.55));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, coarse ? 1.25 : 1.8));
       renderer.setClearColor(0x000000, 0);
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.12;
       host.appendChild(renderer.domElement);
+
+      // Purposeful studio lighting gives the glass geometry real dimensional highlights.
+      scene.add(new THREE.HemisphereLight(0xd8efff, 0x18364c, 1.45));
+      const keyLight = new THREE.DirectionalLight(0xffffff, 2.2);
+      keyLight.position.set(-3.5, 4.5, 5);
+      scene.add(keyLight);
+      const rimLight = new THREE.PointLight(0x78c7ff, 18, 12, 2);
+      rimLight.position.set(3.5, 1.5, 2.5);
+      scene.add(rimLight);
+      const lowerLight = new THREE.PointLight(0x9a8bff, 9, 10, 2);
+      lowerLight.position.set(-2.5, -3, -1.5);
+      scene.add(lowerLight);
 
       const group = new THREE.Group();
       scene.add(group);
@@ -58,12 +73,22 @@
         transmission: .16,
         thickness: .8,
         clearcoat: 1,
-        clearcoatRoughness: .12,
+        clearcoatRoughness: .1,
+        emissive: 0x15334b,
+        emissiveIntensity: .28,
         transparent: true,
-        opacity: .88
+        opacity: .94
       });
       core = new THREE.Mesh(geometry, material);
       group.add(core);
+
+      // Fine crystalline edgework adds detail without a costly post-processing bloom pass.
+      const edgeGeometry = new THREE.EdgesGeometry(geometry, 18);
+      const edgeLines = new THREE.LineSegments(edgeGeometry, new THREE.LineBasicMaterial({
+        color: 0xd7f0ff, transparent: true, opacity: coarse ? .24 : .34
+      }));
+      edgeLines.scale.setScalar(1.004);
+      group.add(edgeLines);
 
       ringA = new THREE.Mesh(
         new THREE.TorusGeometry(2.05, .012, 6, coarse ? 72 : 120),
@@ -155,6 +180,7 @@
 
   const visibilityObserver = new IntersectionObserver((entries) => {
     if (entries.some(entry => entry.isIntersecting)) {
+      visible = true;
       visibilityObserver.disconnect();
       const waitForIntro = new MutationObserver(() => {
         if (!document.body.classList.contains("is-loading")) {
