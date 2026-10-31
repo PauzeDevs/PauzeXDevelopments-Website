@@ -2,7 +2,7 @@
 #
 # VIEW-ONLY SOURCE — DO NOT COPY, MODIFY, REDISTRIBUTE, OR REUSE WITHOUT PRIOR WRITTEN PERMISSION.
 # All rights reserved. Viewing this source on GitHub does not grant permission to reproduce or reuse it.
-name: Deploy PauzeX Developments website
+name: Validate PauzeX Developments website
 
 on:
   push:
@@ -12,19 +12,10 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: github-pages
-  cancel-in-progress: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
@@ -79,12 +70,3 @@ jobs:
           if (!html.includes('px-hero-3d.js?v=20261031.15')) throw new Error("Hero asset cache version was not refreshed.");
           console.log("Validated " + refs.length + " local asset references, " + scripts.length + " page scripts, Temple Night wiring, Three.js pin, and MIT attribution.");
           NODE
-
-      - name: Upload site artifact
-        uses: actions/upload-pages-artifact@v4
-        with:
-          path: _site
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
