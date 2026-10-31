@@ -221,3 +221,112 @@
   }
   .site-header { -webkit-backdrop-filter: none; backdrop-filter: none; }
 }
+
+
+/* Final mobile composition overrides. This file loads after the general responsive
+   sheets, so the Temple Night layer cannot reintroduce the old cramped layout. */
+@media (max-width: 760px) {
+  .skip-link:not(:focus-visible) {
+    transform: translateY(-160%);
+  }
+  .skip-link:focus:not(:focus-visible) {
+    transform: translateY(-160%);
+  }
+  .site-header {
+    position: relative !important;
+    inset: auto !important;
+    z-index: 40 !important;
+    min-height: 78px;
+    padding: 12px 18px !important;
+    background: #e9eef2 !important;
+    border-bottom: 1px solid rgba(20,43,61,.12) !important;
+    box-shadow: none !important;
+  }
+  .wordmark img { display: block; width: clamp(136px, 40vw, 170px); }
+  .hero {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: stretch !important;
+    gap: 0 !important;
+    width: 100%;
+    min-height: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: clamp(76px, 13vh, 112px) 22px 34px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    overflow: hidden;
+  }
+  .hero-3d-scene::after {
+    background:
+      linear-gradient(180deg, rgba(3,9,14,.78) 0%, rgba(3,9,14,.76) 46%, rgba(3,9,14,.86) 100%),
+      linear-gradient(90deg, rgba(3,9,14,.24), rgba(3,9,14,.12)) !important;
+  }
+  .hero-copy {
+    width: 100%;
+    max-width: 620px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .hero .eyebrow {
+    margin: 0;
+    font-size: 8px;
+    line-height: 1.5;
+    letter-spacing: .12em;
+  }
+  .hero-title {
+    width: 100%;
+    margin: 36px 0 26px !important;
+    font-size: clamp(3rem, 11.6vw, 5rem) !important;
+    line-height: .96 !important;
+    letter-spacing: -.075em !important;
+  }
+  .hero-title__line,
+  .hero-title__line--second,
+  .hero-title__line--last {
+    width: auto !important;
+    max-width: 100%;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+    overflow-wrap: normal;
+  }
+  .hero-title__line--second { padding-left: 4vw !important; }
+  .hero-title__line--last { padding-left: 8vw !important; }
+  .hero-description {
+    max-width: 39rem !important;
+    margin: 0 !important;
+    font-size: clamp(15px, 3.8vw, 17px) !important;
+    line-height: 1.72 !important;
+  }
+  .hero-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 18px !important;
+    margin: 28px 0 0 !important;
+  }
+  .hero-actions .button { min-height: 58px; }
+  .hero-foot {
+    position: relative !important;
+    inset: auto !important;
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    margin-top: 58px;
+    padding-top: 17px;
+    border-top: 1px solid rgba(220,235,244,.2);
+    font-size: 8px;
+  }
+  .hero-foot > span:first-child { max-width: 48%; font-size: 7px; }
+  .hero-foot .scroll-cue { justify-content: flex-end; font-size: 8px; }
+  .hero-foot__right, .hero-side-note { display: none !important; }
+}
+@media (max-width: 390px) {
+  .hero { padding-inline: 18px !important; }
+  .hero-title { font-size: clamp(2.75rem, 11.4vw, 3.2rem) !important; }
+  .hero-description { font-size: 14px !important; }
+  .hero-foot { margin-top: 44px; }
+}
