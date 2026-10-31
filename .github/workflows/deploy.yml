@@ -58,7 +58,7 @@ jobs:
           const fs = require("node:fs");
           const path = require("node:path");
           const html = fs.readFileSync("_site/index.html", "utf8");
-          const refs = [...html.matchAll(/\b(?:src|href)=["'](\.\/[^"'?#]+)(?:[?#][^"']*)?["']/g)];
+          const refs = [...html.matchAll(/\\b(?:src|href)=["'](\\.\\/[^"'?#]+)(?:[?#][^"']*)?["']/g)];
           const missing = refs
             .map(match => match[1])
             .filter((ref, index, all) => all.indexOf(ref) === index)
@@ -67,9 +67,14 @@ jobs:
             console.error("Missing local site assets:", missing.join(", "));
             process.exit(1);
           }
-          const scripts = refs.map(match => match[1]).filter(ref => /\.m?js$/.test(ref));
+          const scripts = refs.map(match => match[1]).filter(ref => /\\.m?js$/.test(ref));
           if (!scripts.length) throw new Error("No local JavaScript bundles are referenced.");
-          console.log("Validated " + refs.length + " local asset references and " + scripts.length + " script bundles.");
+          const heroRuntime = fs.readFileSync("_site/px-hero-3d.js", "utf8");
+          const templeRenderer = fs.readFileSync("_site/templeNightRenderer.js", "utf8");
+          if (!heroRuntime.includes('./templeNightRenderer.js')) throw new Error("Temple Night renderer is not wired into the hero.");
+          if (!templeRenderer.includes('three@0.149.0/build/three.module.js')) throw new Error("Temple Night Three.js runtime is not pinned.");
+          if (!fs.existsSync("THREEUI-LICENSE.md")) throw new Error("Third-party MIT attribution is missing.");
+          console.log("Validated " + refs.length + " local asset references, " + scripts.length + " page scripts, Temple Night wiring, Three.js pin, and MIT attribution.");
           NODE
 
       - name: Upload site artifact
