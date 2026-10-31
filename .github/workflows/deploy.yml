@@ -8,6 +8,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -49,6 +52,9 @@ jobs:
           const fs = require("node:fs");
           const path = require("node:path");
           const html = fs.readFileSync("_site/index.html", "utf8");
+          if (!html.includes("pauzex-verify.css") || !html.includes("pauzex-verify.js")) throw new Error("PauzeX Verify gate is not wired into index.html.");
+          const verifyScript = fs.readFileSync("_site/pauzex-verify.js", "utf8");
+          if (!verifyScript.includes("visit%10") || !verifyScript.includes("issueExtra")) throw new Error("PauzeX Verify visit cadence or extra challenge is missing.");
           const attrPattern = new RegExp(String.raw`(?:src|href)=["']([^"']+)["']`, "g");
           const refs = [...html.matchAll(attrPattern)]
             .map(match => match[1])
