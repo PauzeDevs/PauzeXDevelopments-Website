@@ -49,6 +49,34 @@ jobs:
             cp -R assets/. _site/assets/
           fi
 
+      - name: Browser-test verification gate
+        run: |
+          set -euo pipefail
+          npm install --no-save --no-package-lock @playwright/test@1.56.1
+          npx playwright install --with-deps chromium
+          node <<'NODE' &
+          const http = require("node:http");
+          const fs = require("node:fs");
+          const path = require("node:path");
+          const root = path.resolve("_site");
+          const types = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".webp": "image/webp", ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg", ".woff2": "font/woff2" };
+          http.createServer((req, res) => {
+            const pathname = decodeURIComponent(new URL(req.url, "http://localhost").pathname);
+            const file = path.resolve(root, "." + pathname);
+            if (!file.startsWith(root + path.sep) && file !== path.join(root, "index.html")) { res.writeHead(403).end(); return; }
+            const target = fs.existsSync(file) && fs.statSync(file).isFile() ? file : path.join(root, "index.html");
+            res.setHeader("Content-Type", types[path.extname(target)] || "application/octet-stream");
+            fs.createReadStream(target).pipe(res);
+          }).listen(4173, "127.0.0.1");
+          NODE
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do
+            if curl --silent --fail http://127.0.0.1:4173/ >/dev/null; then break; fi
+            sleep 1
+          done
+          npx playwright test tests/verification-gate.spec.cjs --reporter=line
+
       - name: Minify production JavaScript and CSS
         run: |
           set -euo pipefail
