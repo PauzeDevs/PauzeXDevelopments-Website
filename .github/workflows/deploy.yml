@@ -48,6 +48,27 @@ jobs:
             mkdir -p _site/assets
             cp -R assets/. _site/assets/
           fi
+
+      - name: Minify production JavaScript and CSS
+        run: |
+          set -euo pipefail
+          # Keep readable source files in Git; transform only the deploy artifact.
+          # Pin tool versions so a future CLI release cannot silently alter the build.
+          for file in _site/*.js; do
+            [ -f "$file" ] || continue
+            npx --yes --package=terser@5.44.1 terser "$file" --compress --mangle --comments '/Copyright|VIEW-ONLY/' --output "$file.min"
+            mv "$file.min" "$file"
+          done
+          for file in _site/*.css; do
+            [ -f "$file" ] || continue
+            npx --yes --package=clean-css-cli@5.6.3 cleancss --output "$file.min" "$file"
+            mv "$file.min" "$file"
+          done
+          for file in _site/*.js; do
+            [ -f "$file" ] || continue
+            node --check --input-type=module < "$file"
+          done
+          echo "Production JavaScript and CSS minification completed."
           node <<'NODE'
           const fs = require("node:fs");
           const path = require("node:path");
