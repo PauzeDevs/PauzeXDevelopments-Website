@@ -1061,7 +1061,7 @@ const vpH = () => Math.max(1, canvas.clientHeight);
 let renderer, scene, camera, maxAniso = 1;
 const HI = qs('q', COARSE ? 'low' : 'high');
 const LOW = HI === 'low';
-const WANT_POST    = qs('post', '1') !== '0';
+const WANT_POST    = qs('post', COARSE ? '0' : '1') !== '0';
 const WANT_SHADOW  = qs('shadow', LOW ? '0' : '1') !== '0';
 const DPR_CAP      = qn('dpr', LOW ? 1.25 : 1.8);
 /* the renderer trades resolution for frame rate on its own — the scene is
