@@ -13,6 +13,7 @@ const qs     = (k, d) => { const v = Q.get(k); return v === null ? d : v; };
 const qn     = (k, d) => { const v = Q.get(k); return v === null ? d : parseFloat(v); };
 const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const COARSE = matchMedia('(hover: none)').matches;
+const TEX_SCALE = COARSE ? 0.5 : 1;
 
 const clamp  = (v, a, b) => v < a ? a : (v > b ? b : v);
 const sat    = v => clamp(v, 0, 1);
@@ -113,7 +114,7 @@ function normalFromHeight(hc, strength) {
 /* ------------------------------------------------------- 2 · surfaces */
 /* long, wet, board-formed concrete — the sanctuary walls */
 function texWall() {
-  const W = 1024, H = 1024;
+  const W = Math.round(1024 * TEX_SCALE), H = Math.round(1024 * TEX_SCALE);
   const c = cvs(W, H), x = c.getContext('2d');
   x.fillStyle = '#10161a'; x.fillRect(0, 0, W, H);
 
@@ -439,7 +440,7 @@ function texStone(seed, opt) {
    coverage — the grain has to read *through* the red, which is what stops it
    looking like plastic. */
 function texLacquer() {
-  const W = 512, H = 512;
+  const W = Math.round(512 * TEX_SCALE), H = Math.round(512 * TEX_SCALE);
   const wood = texWood(131, { base: [34, 22, 17], boards: 0 });
   const c = cvs(W, H), x = c.getContext('2d');
   const h = cvs(W, H), hx = h.getContext('2d');
@@ -517,7 +518,7 @@ function texLacquer() {
 
 /* the shoji screen the sun burns through */
 function texShoji() {
-  const W = 1024, H = 768, c = cvs(W, H), x = c.getContext('2d');
+  const W = Math.round(1024 * TEX_SCALE), H = Math.round(768 * TEX_SCALE), c = cvs(W, H), x = c.getContext('2d');
   x.clearRect(0, 0, W, H);
   x.fillStyle = 'rgba(228,222,206,.055)'; x.fillRect(0, 0, W, H);
   x.strokeStyle = 'rgba(10,8,7,.88)';
@@ -1063,7 +1064,7 @@ const HI = qs('q', COARSE ? 'low' : 'high');
 const LOW = HI === 'low';
 const WANT_POST    = qs('post', COARSE ? '0' : '1') !== '0';
 const WANT_SHADOW  = qs('shadow', LOW ? '0' : '1') !== '0';
-const DPR_CAP      = qn('dpr', LOW ? 1.25 : 1.8);
+const DPR_CAP      = qn('dpr', LOW ? 1.0 : 1.8);
 /* the renderer trades resolution for frame rate on its own — the scene is
    fill-bound (five big alpha-blended veils plus a bloom chain), so pixels
    are the only knob worth turning on unknown hardware */
