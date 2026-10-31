@@ -22,21 +22,25 @@
   let attempts = 0;
   let observer = null;
 
-  const safeGet = (store, key) => { try { return store.getItem(key); } catch { return null; } };
-  const safeSet = (store, key, value) => { try { store.setItem(key, value); return true; } catch { return false; } };
+  const safeGet = (storageName, key) => {
+    try { return window[storageName].getItem(key); } catch { return null; }
+  };
+  const safeSet = (storageName, key, value) => {
+    try { window[storageName].setItem(key, value); return true; } catch { return false; }
+  };
   const readCount = () => {
-    const value = Number(safeGet(localStorage, COUNT));
+    const value = Number(safeGet("localStorage", COUNT));
     return Number.isSafeInteger(value) && value >= 0 ? value : 0;
   };
   let visit = readCount();
-  if (safeGet(sessionStorage, COUNTED) !== "1") {
+  if (safeGet("sessionStorage", COUNTED) !== "1") {
     visit += 1;
-    safeSet(localStorage, COUNT, String(visit));
-    safeSet(sessionStorage, COUNTED, "1");
+    safeSet("localStorage", COUNT, String(visit));
+    safeSet("sessionStorage", COUNTED, "1");
   }
   const sessionIsValid = () => {
     try {
-      const record = JSON.parse(safeGet(sessionStorage, SESSION) || "null");
+      const record = JSON.parse(safeGet("sessionStorage", SESSION) || "null");
       return record && record.ok === true && Number.isFinite(record.at) &&
         Date.now() - record.at >= 0 && Date.now() - record.at < SESSION_TTL;
     } catch { return false; }
@@ -59,7 +63,7 @@
     return Math.floor(Math.random() * max);
   };
   const complete = () => {
-    safeSet(sessionStorage, SESSION, JSON.stringify({ ok: true, at: Date.now(), visit }));
+    safeSet("sessionStorage", SESSION, JSON.stringify({ ok: true, at: Date.now(), visit }));
     status.textContent = "Verified. Welcome to PauzeX.";
     gate.classList.add("is-verified");
     primary.disabled = true;
