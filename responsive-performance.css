@@ -152,3 +152,7 @@ a { overflow-wrap: anywhere; }
 
 /* Avoid reserving compositor layers for every off-screen reveal item. */
 .reveal, .reveal.is-visible { will-change: auto; }
+
+/* Private project cards remain visible as featured work without exposing dead repository links. */
+[data-repo-visibility="private"] .project-arrow,
+[data-repo-visibility="private"] .project-link { display: none !important; }
