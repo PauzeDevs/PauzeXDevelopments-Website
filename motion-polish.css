@@ -38,6 +38,7 @@ html { scroll-behavior: smooth; }
 }
 .desktop-nav a[aria-current="location"] { color: #477da1; }
 .hero-copy { transform-style: preserve-3d; }
+.studio-note, .activity-panel { transform: translate3d(0, calc(var(--scroll-depth, 0) * -5px), 0); will-change: transform; }
 .hero-title__line { transition: transform .7s var(--px-ease); }
 .hero:hover .hero-title__line--second { transform: translateX(5px); }
 .hero:hover .hero-title__line--last { transform: translateX(10px); }
