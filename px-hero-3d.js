@@ -144,9 +144,11 @@
 
   if (!("IntersectionObserver" in window)) checkStart();
 
-  window.addEventListener("pagehide", () => {
-    disposed = true;
+  window.addEventListener("pagehide", (event) => {
     cancelFrame();
+    // Keep the WebGL context alive when the browser stores this page in BFCache.
+    if (event.persisted) return;
+    disposed = true;
     visibilityObserver?.disconnect();
     introObserver?.disconnect();
     resizeObserver?.disconnect();
@@ -157,5 +159,11 @@
     document.removeEventListener("visibilitychange", onVisibilityChange);
     renderer?.dispose();
     renderer = null;
-  }, { once: true });
+  });
+  window.addEventListener("pageshow", (event) => {
+    if (!event.persisted) return;
+    visible = hero.getBoundingClientRect().bottom > 0 &&
+      hero.getBoundingClientRect().top < window.innerHeight;
+    schedule();
+  });
 })();
