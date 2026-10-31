@@ -22,14 +22,18 @@ All rights reserved. Viewing this source on GitHub does not grant permission to 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css">
-  <link rel="stylesheet" href="./reference-design.css">
-  <link rel="stylesheet" href="./studio-refresh.css">
-  <link rel="stylesheet" href="./immersive-glass.css">
-  <link rel="stylesheet" href="./motion-polish.css">
-  <script src="./script.js" defer></script>
-  <script src="./immersive.js" defer></script>
-  <script src="./motion-polish.js" defer></script>
+  <link rel="stylesheet" href="./styles.css?v=20261031.4">
+  <link rel="stylesheet" href="./reference-design.css?v=20261031.4">
+  <link rel="stylesheet" href="./studio-refresh.css?v=20261031.4">
+  <link rel="stylesheet" href="./immersive-glass.css?v=20261031.4">
+  <link rel="stylesheet" href="./motion-polish.css?v=20261031.4">
+  <link rel="stylesheet" href="./scroll-reveal.css?v=20261031.4">
+  <link rel="stylesheet" href="./cookie-preferences.css?v=20261031.4">
+  <script src="./script.js?v=20261031.4" defer></script>
+  <script src="./immersive.js?v=20261031.4" defer></script>
+  <script src="./motion-polish.js?v=20261031.4" defer></script>
+  <script src="./scroll-reveal.js?v=20261031.4" defer></script>
+  <script src="./cookie-preferences.js?v=20261031.4" defer></script>
 </head>
 <body class="is-loading">
   <a class="skip-link" id="skip-link" href="#main">Skip to content</a>
@@ -216,7 +220,44 @@ All rights reserved. Viewing this source on GitHub does not grant permission to 
       <p>Independent software projects by Pauze.</p>
       <a class="back-to-top" href="#home">Back to top <span aria-hidden="true">↑</span></a>
     </div>
-    <div class="site-footer__bottom"><span>© <span id="year">2026</span> PAUZEX DEVELOPMENTS</span><span>MADE WITH INTENTION <i aria-hidden="true">✳</i></span><a href="https://github.com/PauzeDevs" target="_blank" rel="noreferrer">GITHUB ↗</a></div>
+    <div class="site-footer__bottom"><span>© <span id="year">2026</span> PAUZEX DEVELOPMENTS</span><span>MADE WITH INTENTION <i aria-hidden="true">✳</i></span><button class="cookie-settings-link" type="button" data-cookie-settings>COOKIE PREFERENCES</button><a href="https://github.com/PauzeDevs" target="_blank" rel="noreferrer">GITHUB ↗</a></div>
   </footer>
+
+  <aside class="cookie-banner" id="cookie-banner" aria-label="Privacy notice" hidden>
+    <div class="cookie-banner__copy">
+      <p class="cookie-banner__eyebrow">PRIVACY, WITHOUT THE GUESSWORK</p>
+      <h2>Your privacy matters.</h2>
+      <p>This site does not currently use analytics or advertising cookies. Essential browser storage remembers that you have seen this notice. You can review the details any time.</p>
+    </div>
+    <div class="cookie-banner__actions">
+      <button class="cookie-button" type="button" data-cookie-settings>Preferences</button>
+      <button class="cookie-button cookie-button--primary" id="cookie-accept" type="button">Got it</button>
+    </div>
+  </aside>
+  <div class="cookie-dialog" id="cookie-dialog" role="dialog" aria-modal="true" aria-labelledby="cookie-title" aria-describedby="cookie-description" hidden>
+    <section class="cookie-dialog__panel">
+      <div class="cookie-dialog__top">
+        <div>
+          <p class="cookie-dialog__eyebrow">PAUZEX · PRIVACY SETTINGS</p>
+          <h2 id="cookie-title">Cookie preferences</h2>
+        </div>
+        <button class="cookie-dialog__close" id="cookie-close" type="button" aria-label="Close preferences">×</button>
+      </div>
+      <p id="cookie-description">PauzeX currently has no analytics or advertising service connected. These settings explain what the site stores in your browser.</p>
+      <div class="cookie-option">
+        <div><strong>Essential preference storage</strong><span>Remembers that you dismissed this notice. Required for this preference to persist.</span></div>
+        <span class="cookie-option__state">Always on</span>
+      </div>
+      <div class="cookie-option">
+        <div><strong>Analytics and advertising</strong><span>Not active. This site does not currently set analytics or advertising cookies.</span></div>
+        <span class="cookie-option__state">Not used</span>
+      </div>
+      <div class="cookie-dialog__foot">
+        <button class="cookie-button" type="button" data-cookie-settings>Close</button>
+        <button class="cookie-button cookie-button--primary" id="cookie-save" type="button">Save preferences</button>
+      </div>
+    </section>
+  </div>
+
 </body>
 </html>
