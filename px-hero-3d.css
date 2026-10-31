@@ -173,9 +173,10 @@
 /* Keep all site content above the fixed canvas. The page panels are translucent
    so the temple remains visible as the visitor scrolls through every section. */
 .site-header, #main, .site-footer, .scroll-meter, .skip-link, .cookie-banner, .cookie-dialog {
-  position: relative;
   z-index: 2;
 }
+/* Preserve each component's own positioning contract, including viewport overlays. */
+.scroll-meter, .skip-link, .cookie-banner, .cookie-dialog { position: fixed; }
 .intro { z-index: 20 !important; }
 .site-header {
   background: rgba(239,244,241,.78) !important;
