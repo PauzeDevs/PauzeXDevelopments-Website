@@ -1,16 +1,13 @@
 /*
   PauzeX Developments — interaction polish
-  Progressive enhancement. Leaves the existing site script and its features intact.
+  Active navigation and pointer-only magnetic response.
+  Scroll-linked visual work is centralized in runtime-optimizations.js.
 */
 (() => {
   "use strict";
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-  const header = document.querySelector(".site-header");
-  const navLinks = [...document.querySelectorAll('.desktop-nav a[href^="#"]')];
-  const sections = navLinks.map(link => document.querySelector(link.getAttribute("href"))).filter(Boolean);
 
-  // Active-section navigation. Scroll-linked visual work is centralized in runtime-optimizations.js.
   const navLinks = [...document.querySelectorAll('.desktop-nav a[href^="#"]')];
   const sections = navLinks.map(link => document.querySelector(link.getAttribute("href"))).filter(Boolean);
   if ("IntersectionObserver" in window && sections.length) {
@@ -31,35 +28,14 @@
 
   if (!finePointer || reduceMotion) return;
 
-  // Soft magnetic response on primary actions, capped to avoid distracting movement.
   document.querySelectorAll(".hero-actions .button, .header-contact, .closing .button").forEach(el => {
     el.addEventListener("pointermove", event => {
       const rect = el.getBoundingClientRect();
       const dx = (event.clientX - rect.left - rect.width / 2) / rect.width;
       const dy = (event.clientY - rect.top - rect.height / 2) / rect.height;
-      el.style.transform = "translate3d(" + (dx * 5).toFixed(1) + "px," + (dy * 4).toFixed(1) + "px,0)";
+      el.style.transform = "translate3d(" + (dx * 4).toFixed(1) + "px," + (dy * 3).toFixed(1) + "px,0)";
     }, { passive: true });
     el.addEventListener("pointerleave", () => { el.style.transform = ""; });
     el.addEventListener("blur", () => { el.style.transform = ""; });
   });
-
-  // Scroll-linked depth on the studio note and activity surface.
-  const depthTargets = document.querySelectorAll(".studio-note, .activity-panel");
-  let scheduled = false;
-  const updateDepth = () => {
-    if (scheduled) return;
-    scheduled = true;
-    window.requestAnimationFrame(() => {
-      const viewport = window.innerHeight || 1;
-      depthTargets.forEach((el, index) => {
-        const rect = el.getBoundingClientRect();
-        const center = rect.top + rect.height / 2;
-        const progress = Math.max(-1, Math.min(1, (center - viewport / 2) / viewport));
-        el.style.setProperty("--scroll-depth", (progress * (index ? 1.2 : -.8)).toFixed(3));
-      });
-      scheduled = false;
-    });
-  };
-  window.addEventListener("scroll", updateDepth, { passive: true });
-  updateDepth();
 })();
