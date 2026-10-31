@@ -1063,7 +1063,7 @@ const HI = qs('q', COARSE ? 'low' : 'high');
 const LOW = HI === 'low';
 const WANT_POST    = qs('post', '1') !== '0';
 const WANT_SHADOW  = qs('shadow', LOW ? '0' : '1') !== '0';
-const DPR_CAP      = qn('dpr', LOW ? 1.4 : 1.8);
+const DPR_CAP      = qn('dpr', LOW ? 1.25 : 1.8);
 /* the renderer trades resolution for frame rate on its own — the scene is
    fill-bound (five big alpha-blended veils plus a bloom chain), so pixels
    are the only knob worth turning on unknown hardware */
