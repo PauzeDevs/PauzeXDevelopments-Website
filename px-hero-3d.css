@@ -175,6 +175,9 @@
 .site-header, #main, .site-footer, .scroll-meter, .skip-link, .cookie-banner, .cookie-dialog {
   z-index: 2;
 }
+/* A z-index has no effect on static-flow #main. Establish the page layer above
+   the fixed z-index:0 WebGL canvas, which is appended directly to <body>. */
+#main, .site-footer { position: relative; z-index: 2; }
 /* Preserve each component's own positioning contract, including viewport overlays. */
 .scroll-meter, .skip-link, .cookie-banner, .cookie-dialog { position: fixed; }
 .intro { z-index: 20 !important; }
