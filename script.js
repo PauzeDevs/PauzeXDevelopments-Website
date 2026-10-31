@@ -350,8 +350,10 @@ All rights reserved. Viewing this source on GitHub does not grant permission to 
       .filter((card) => card.dataset.repoVisibility === "private")
       .forEach(renderPrivateRepositoryState);
 
-    const activityRequests = publicProjectCards.map((card) => fetchLatestCommit(card).catch(() => null));
-    const metadataRequests = publicProjectCards.map(async (card) => {
+    // Load repository details only as a card approaches the viewport.
+    const loadCardMetadata = async (card) => {
+      if (card.dataset.metadataLoaded === "true") return;
+      card.dataset.metadataLoaded = "true";
       try {
         const info = await getGitHubJson("https://api.github.com/repos/" + card.dataset.repo);
         renderRepoMeta(card, info);
@@ -360,9 +362,38 @@ All rights reserved. Viewing this source on GitHub does not grant permission to 
         if (target) target.textContent = "Live repository details unavailable";
       }
       await renderLatestRelease(card, card.dataset.repo);
-    });
-    Promise.all(activityRequests).then((items) => renderActivity(items.filter(Boolean)));
-    Promise.all(metadataRequests).catch(() => {});
+    };
+
+    if ("IntersectionObserver" in window) {
+      const cardObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          observer.unobserve(entry.target);
+          loadCardMetadata(entry.target);
+        });
+      }, { rootMargin: "240px 0px", threshold: 0 });
+      publicProjectCards.forEach((card) => cardObserver.observe(card));
+    } else {
+      publicProjectCards.forEach(loadCardMetadata);
+    }
+
+    // Recent activity is fetched only when its panel is near view, not on initial page load.
+    const loadActivity = () => {
+      if (!activityList || activityList.dataset.loaded === "true") return;
+      activityList.dataset.loaded = "true";
+      Promise.all(publicProjectCards.map((card) => fetchLatestCommit(card).catch(() => null)))
+        .then((items) => renderActivity(items.filter(Boolean)));
+    };
+    if (activityList && "IntersectionObserver" in window) {
+      const activityObserver = new IntersectionObserver((entries, observer) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        observer.disconnect();
+        loadActivity();
+      }, { rootMargin: "300px 0px", threshold: 0 });
+      activityObserver.observe(activityList);
+    } else {
+      loadActivity();
+    }
   }
 
 })();
