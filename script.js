@@ -49,6 +49,11 @@
   if (!due || sessionIsValid()) {
     gate.hidden = true;
     document.body.classList.remove("px-verify-locked");
+    // The intro controller owns the site's normal inert state. Do not leave
+    // the header or page content inert when verification is not required.
+    document.getElementById("site-header")?.removeAttribute("inert");
+    document.getElementById("main")?.removeAttribute("inert");
+    document.querySelector(".site-footer")?.removeAttribute("inert");
     return;
   }
 
