@@ -18,6 +18,8 @@
   let disposed = false;
   let visible = false;
   let frame = 0;
+  let lastFrameAt = 0;
+  const frameInterval = finePointer ? 1000 / 60 : 1000 / 30;
   let resizeObserver = null;
   let visibilityObserver = null;
   let introObserver = null;
@@ -37,6 +39,8 @@
   const draw = (time) => {
     frame = 0;
     if (disposed || !renderer || !visible || document.hidden) return;
+    if (lastFrameAt && time - lastFrameAt < frameInterval) { schedule(); return; }
+    lastFrameAt = time;
     renderer.render(time);
     if (!reducedMotion && !renderer.reducedMotion) schedule();
   };
@@ -73,7 +77,7 @@
 
   const onVisibilityChange = () => {
     if (document.hidden) cancelFrame();
-    else schedule();
+    else { lastFrameAt = 0; schedule(); }
   };
 
   const start = async () => {
