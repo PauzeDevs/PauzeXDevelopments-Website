@@ -77,8 +77,9 @@ test("production layout keeps overlays fixed and project tools outside the title
     work: getComputedStyle(document.querySelector("#work")).backgroundColor,
     workBlur: getComputedStyle(document.querySelector("#work")).backdropFilter
   }));
-  expect(sectionGlass.studio).toContain("0.34");
-  expect(sectionGlass.work).toContain("0.40");
+  const alpha = color => Number(color.match(/rgba?\([^,]+,[^,]+,[^,]+,\s*([\d.]+)\)/)?.[1]);
+  expect(alpha(sectionGlass.studio)).toBeCloseTo(0.34);
+  expect(alpha(sectionGlass.work)).toBeCloseTo(0.4);
   expect(sectionGlass.workBlur).toContain("blur");
   expect(positions.mainZIndex).toBe("2");
   expect(Number(positions.heroOpacity)).toBeGreaterThan(0.95);
