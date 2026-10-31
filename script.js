@@ -229,11 +229,13 @@ All rights reserved. Viewing this source on GitHub does not grant permission to 
     revealItems.forEach((item) => item.classList.add("is-visible"));
   }
 
-  function closeMenu() {
+  function closeMenu({ returnFocus = false } = {}) {
     if (!menuToggle || !mobileNav) return;
+    const wasOpen = menuToggle.getAttribute("aria-expanded") === "true";
     menuToggle.setAttribute("aria-expanded", "false");
     menuToggle.setAttribute("aria-label", "Open navigation");
     mobileNav.hidden = true;
+    if (returnFocus && wasOpen) menuToggle.focus({ preventScroll: true });
   }
 
   menuToggle?.addEventListener("click", () => {
@@ -245,7 +247,10 @@ All rights reserved. Viewing this source on GitHub does not grant permission to 
 
   mobileNav?.querySelectorAll("a").forEach((link) => link.addEventListener("click", closeMenu));
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") closeMenu();
+    if (event.key === "Escape" && mobileNav && !mobileNav.hidden) {
+      event.preventDefault();
+      closeMenu({ returnFocus: true });
+    }
   });
   document.addEventListener("click", (event) => {
     if (!mobileNav || mobileNav.hidden || !menuToggle) return;
