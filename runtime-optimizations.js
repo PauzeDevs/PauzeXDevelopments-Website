@@ -35,9 +35,16 @@
   const cachePrefix = "pauzex-api-cache-v2:";
   const ttl = 10 * 60 * 1000;
   window.fetch = async (input, init = {}) => {
+    const request = input instanceof Request ? input : null;
     const url = typeof input === "string" ? input : input?.url;
-    if (!url || !url.startsWith("https://api.github.com/repos/")) return originalFetch(input, init);
-    const key = cachePrefix + url;
+    const method = (init.method || request?.method || "GET").toUpperCase();
+    const headers = new Headers(request?.headers || undefined);
+    new Headers(init.headers || undefined).forEach((value, name) => headers.set(name, value));
+    if (!url || !url.startsWith("https://api.github.com/repos/") || method !== "GET" ||
+        headers.has("authorization") || (request?.credentials && request.credentials !== "same-origin")) {
+      return originalFetch(input, init);
+    }
+    const key = cachePrefix + url + "|" + (headers.get("accept") || "");
     try {
       const cached = sessionStorage.getItem(key);
       if (cached) {
