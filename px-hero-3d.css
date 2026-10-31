@@ -385,3 +385,104 @@
     background: rgba(5, 12, 17, .52) !important;
   }
 }
+
+
+/* Final mobile-first scene composition: preserve the actual WebGL scene behind
+   every section. Never place an opaque paper/blue panel over the canvas. */
+body { background: #050a0e !important; }
+.temple-night-background { z-index: 0 !important; }
+.temple-night-background::after {
+  opacity: .22 !important;
+  background: linear-gradient(180deg, rgba(3,8,12,.12), rgba(3,8,12,.28)) !important;
+}
+#main > .studio,
+#main > .services {
+  color: #edf3f6 !important;
+  background: rgba(5, 12, 17, .34) !important;
+  border-color: rgba(224, 240, 248, .13);
+  -webkit-backdrop-filter: blur(8px) saturate(115%);
+  backdrop-filter: blur(8px) saturate(115%);
+}
+#main > .work {
+  color: #edf3f6 !important;
+  background: rgba(5, 12, 17, .40) !important;
+  -webkit-backdrop-filter: blur(8px) saturate(115%);
+  backdrop-filter: blur(8px) saturate(115%);
+}
+#main > .closing {
+  color: #edf3f6 !important;
+  background: rgba(5, 12, 17, .46) !important;
+  -webkit-backdrop-filter: blur(9px) saturate(115%);
+  backdrop-filter: blur(9px) saturate(115%);
+}
+#main > .studio .studio-title,
+#main > .services .section-title,
+#main > .services .services-intro > p,
+#main > .services .service-row h3,
+#main > .services .service-row p,
+#main > .studio .section-heading__aside,
+#main > .services .section-heading__aside {
+  color: #edf3f6 !important;
+}
+#main > .studio .studio-title em,
+#main > .services .section-title em { color: #a5d6f3 !important; }
+#main > .studio .studio-note {
+  color: #173247 !important;
+  background: linear-gradient(145deg, rgba(236,245,249,.84), rgba(208,226,236,.68)) !important;
+  border: 1px solid rgba(255,255,255,.76);
+  box-shadow: 0 18px 52px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.8);
+  -webkit-backdrop-filter: blur(18px) saturate(135%);
+  backdrop-filter: blur(18px) saturate(135%);
+}
+#main > .studio .studio-note p,
+#main > .studio .studio-note__small,
+#main > .studio .studio-note .text-link { color: #29485c !important; }
+#main > .services .service-row {
+  border: 1px solid rgba(226,241,249,.20);
+  border-radius: 18px;
+  margin-block: 10px;
+  padding: 22px 20px;
+  background: rgba(225,239,247,.12) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.12);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+.site-footer {
+  color: #e8f0f4 !important;
+  background: rgba(5,12,17,.68) !important;
+  border-color: rgba(226,241,249,.16) !important;
+}
+.site-footer__top p, .back-to-top, .site-footer__bottom { color: #c1d1da !important; }
+.site-header {
+  background: rgba(232,240,245,.78) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(140%) !important;
+  backdrop-filter: blur(18px) saturate(140%) !important;
+}
+@media (max-width: 760px), (pointer: coarse) {
+  #main > .studio,
+  #main > .services,
+  #main > .work,
+  #main > .closing {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  #main > .studio,
+  #main > .services { background: rgba(5,12,17,.42) !important; }
+  #main > .work { background: rgba(5,12,17,.48) !important; }
+  #main > .closing { background: rgba(5,12,17,.56) !important; }
+  #main > .studio .studio-note {
+    background: rgba(231,241,247,.88) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  #main > .services .service-row {
+    background: rgba(225,239,247,.13) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  .site-header {
+    background: rgba(232,240,245,.88) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}
