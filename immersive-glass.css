@@ -55,6 +55,9 @@ body::after {
   overflow: hidden;
   border: 1px solid rgba(255,255,255,.76);
   border-radius: 0 0 34px 34px;
+  transform: perspective(1500px) rotateX(var(--hero-rotate-x,0deg)) rotateY(var(--hero-rotate-y,0deg));
+  transform-style: preserve-3d;
+  transition: transform .4s ease-out;
   background:
     radial-gradient(ellipse at 76% 26%, rgba(255,255,255,.78), transparent 34%),
     linear-gradient(135deg, rgba(255,255,255,.38), rgba(213,228,239,.18));
