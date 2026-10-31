@@ -20,6 +20,7 @@
   let pointerActivity = 0;
   let answer = -1;
   let attempts = 0;
+  let observer = null;
 
   const safeGet = (store, key) => { try { return store.getItem(key); } catch { return null; } };
   const safeSet = (store, key, value) => { try { store.setItem(key, value); return true; } catch { return false; } };
@@ -62,12 +63,15 @@
     status.textContent = "Verified. Welcome to PauzeX.";
     gate.classList.add("is-verified");
     primary.disabled = true;
+    observer?.disconnect();
     window.setTimeout(() => {
       gate.hidden = true;
       document.body.classList.remove("px-verify-locked");
       $("site-header")?.removeAttribute("inert");
       $("main")?.removeAttribute("inert");
       document.querySelector(".site-footer")?.removeAttribute("inert");
+      const nextFocus = document.getElementById("enter-button") || document.getElementById("main");
+      nextFocus?.focus({ preventScroll: true });
     }, 420);
   };
   const issueChallenge = () => {
@@ -88,7 +92,7 @@
       button.type = "button";
       button.className = "px-verify-option";
       button.textContent = symbol;
-      button.setAttribute("aria-label", "Symbol option " + (index + 1));
+      button.setAttribute("aria-label", "Symbol option " + (index + 1) + ": " + symbol);
       button.addEventListener("click", () => {
         if (index === answer) complete();
         else {
@@ -100,7 +104,23 @@
     });
     extra.hidden = false;
     status.textContent = "An additional check is required.";
+    options.querySelector("button")?.focus();
   };
+  // Keep keyboard users inside the modal until verification is complete.
+  gate.addEventListener("keydown", (event) => {
+    if (event.key !== "Tab") return;
+    const focusable = [...gate.querySelectorAll('button:not(:disabled), input:not(:disabled), [href], [tabindex]:not([tabindex="-1"])')]
+      .filter((element) => !element.hidden && element.getAttribute("aria-hidden") !== "true");
+    if (!focusable.length) { event.preventDefault(); return; }
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && (document.activeElement === first || !gate.contains(document.activeElement))) {
+      event.preventDefault(); last.focus();
+    } else if (!event.shiftKey && (document.activeElement === last || !gate.contains(document.activeElement))) {
+      event.preventDefault(); first.focus();
+    }
+  });
+  checkbox.focus({ preventScroll: true });
   document.addEventListener("pointermove", () => { pointerActivity = Math.min(pointerActivity + 1, 20); }, { passive: true });
   primary.addEventListener("click", () => {
     if (!checkbox.checked) {
@@ -116,7 +136,7 @@
   });
 
   // Detect accidental removal of the gate while the challenge is pending.
-  const observer = new MutationObserver(() => {
+  observer = new MutationObserver(() => {
     if (!gate.hidden && !gate.isConnected) {
       document.body.classList.add("px-verify-locked");
       status.textContent = "Verification state changed. Reload this page to continue.";
