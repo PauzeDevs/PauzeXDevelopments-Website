@@ -1,87 +1,50 @@
-# Copyright (c) 2026 Aarav Singh / PauzeDevs.
-#
-# VIEW-ONLY SOURCE — DO NOT COPY, MODIFY, REDISTRIBUTE, OR REUSE WITHOUT PRIOR WRITTEN PERMISSION.
-# All rights reserved. Viewing this source on GitHub does not grant permission to reproduce or reuse it.
-name: Validate PauzeX Developments website
+name: Build and deploy PauzeX Developments
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: pauzex-pages-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
-
       - name: Configure GitHub Pages
+        if: github.event_name != 'pull_request'
         uses: actions/configure-pages@v5
         with:
           enablement: true
-
       - name: Validate JavaScript syntax
         run: |
           set -euo pipefail
           for file in ./*.js; do
+            [ -f "$file" ] || continue
             node --check --input-type=module < "$file"
           done
-
-      - name: Prepare and validate complete static site
+      - name: Prepare complete static site
         run: |
           set -euo pipefail
           mkdir -p _site
           cp -a ./*.html ./*.css ./*.js .nojekyll CNAME THREEUI-LICENSE.md _site/
-          if [ -d .well-known ]; then
-            mkdir -p _site/.well-known
-            cp -R .well-known/. _site/.well-known/
-          fi
-          if [ -d assets ]; then
-            mkdir -p _site/assets
-            cp -R assets/. _site/assets/
-          fi
-
-      - name: Browser-test verification gate
+          if [ -d .well-known ]; then mkdir -p _site/.well-known; cp -R .well-known/. _site/.well-known/; fi
+          if [ -d assets ]; then mkdir -p _site/assets; cp -R assets/. _site/assets/; fi
+      - name: Minify and validate production artifact
         run: |
           set -euo pipefail
-          npm install --no-save --no-package-lock @playwright/test@1.56.1
-          npx playwright install --with-deps chromium
-          node <<'NODE' &
-          const http = require("node:http");
-          const fs = require("node:fs");
-          const path = require("node:path");
-          const root = path.resolve("_site");
-          const types = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".webp": "image/webp", ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg", ".woff2": "font/woff2" };
-          http.createServer((req, res) => {
-            const pathname = decodeURIComponent(new URL(req.url, "http://localhost").pathname);
-            const file = pathname === "/" ? path.join(root, "index.html") : path.resolve(root, "." + pathname);
-            if (file !== path.join(root, "index.html") && !file.startsWith(root + path.sep)) { res.writeHead(403).end(); return; }
-            const target = fs.existsSync(file) && fs.statSync(file).isFile() ? file : path.join(root, "index.html");
-            res.setHeader("Content-Type", types[path.extname(target)] || "application/octet-stream");
-            fs.createReadStream(target).pipe(res);
-          }).listen(4173, "127.0.0.1");
-          NODE
-          SERVER_PID=$!
-          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
-          for attempt in $(seq 1 30); do
-            if curl --silent --fail http://127.0.0.1:4173/ >/dev/null; then break; fi
-            sleep 1
-          done
-          npx playwright test tests/verification-gate.spec.cjs --reporter=line
-
-      - name: Minify production JavaScript and CSS
-        run: |
-          set -euo pipefail
-          # Keep readable source files in Git; transform only the deploy artifact.
-          # Pin tool versions so a future CLI release cannot silently alter the build.
           for file in _site/*.js; do
             [ -f "$file" ] || continue
             npx --yes --package=terser@5.44.1 terser "$file" --compress --mangle --comments '/Copyright|VIEW-ONLY/' --output "$file.min"
@@ -92,39 +55,73 @@ jobs:
             npx --yes --package=clean-css-cli@5.6.3 cleancss --output "$file.min" "$file"
             mv "$file.min" "$file"
           done
-          for file in _site/*.js; do
-            [ -f "$file" ] || continue
-            node --check --input-type=module < "$file"
-          done
-          echo "Production JavaScript and CSS minification completed."
+          for file in _site/*.js; do [ -f "$file" ] || continue; node --check --input-type=module < "$file"; done
           node <<'NODE'
           const fs = require("node:fs");
           const path = require("node:path");
           const html = fs.readFileSync("_site/index.html", "utf8");
-          if (!html.includes('id="px-verify-gate"')) throw new Error("PauzeX Verify gate markup is missing.");
-          const mainScript = fs.readFileSync("_site/script.js", "utf8");
-          const mainStyles = fs.readFileSync("_site/styles.css", "utf8");
-          if (!mainScript.includes("px_visit_count_v2") || !mainScript.includes("px-verify-options")) throw new Error("Bundled PauzeX Verify logic or challenge is missing.");
-          if (!mainStyles.includes("#px-verify-gate")) throw new Error("Bundled PauzeX Verify styling is missing.");
-          if (html.includes("pauzex-verify.js") || html.includes("pauzex-verify.css")) throw new Error("Standalone verification asset reference remains.");
-          const attrPattern = new RegExp(String.raw`(?:src|href)=["']([^"']+)["']`, "g");
-          const refs = [...html.matchAll(attrPattern)]
-            .map(match => match[1])
-            .filter(ref => ref.startsWith("./") && !ref.startsWith("//"));
-          const missing = [...new Set(refs)]
-            .filter(ref => !fs.existsSync(path.join("_site", ref.slice(2).split(/[?#]/)[0])));
-          if (missing.length) {
-            console.error("Missing local site assets:", missing.join(", "));
-            process.exit(1);
+          for (const id of ["px-verify-gate", "project-search", "cookie-banner", "cookie-dialog"]) {
+            if (!html.includes('id="' + id + '"')) throw new Error("Required markup missing: " + id);
           }
-          const scripts = refs.filter(ref => ref.split(/[?#]/)[0].endsWith(".js"));
-          if (!scripts.length) throw new Error("No local JavaScript bundles are referenced.");
-          const heroRuntime = fs.readFileSync("_site/px-hero-3d.js", "utf8");
-          const templeRenderer = fs.readFileSync("_site/templeNightRenderer.js", "utf8");
-          if (!heroRuntime.includes('./templeNightRenderer.js')) throw new Error("Temple Night renderer is not wired into the hero.");
-          if (!templeRenderer.includes('three@0.149.0/build/three.module.js')) throw new Error("Temple Night Three.js runtime is not pinned.");
-          if (!fs.existsSync("_site/THREEUI-LICENSE.md")) throw new Error("Third-party MIT attribution is missing from the deployed artifact.");
-          if (fs.readFileSync("_site/CNAME", "utf8").trim() !== "pauzex.devs.surf") throw new Error("Custom domain CNAME is missing or incorrect.");
-          if (!html.includes('px-hero-3d.js?v=20261031.15')) throw new Error("Hero asset cache version was not refreshed.");
-          console.log("Validated " + refs.length + " local asset references, " + scripts.length + " page scripts, Temple Night wiring, Three.js pin, and MIT attribution.");
+          if (!html.includes('class="project-tools"')) throw new Error("Project filters container missing.");
+          if (!html.includes('<link rel="canonical" href="https://pauzex.devs.surf/">')) throw new Error("Canonical URL missing.");
+          const refs = [...html.matchAll(new RegExp(String.raw`(?:src|href)=["']([^"']+)["']`, "g"))]
+            .map(match => match[1]).filter(ref => ref.startsWith("./"));
+          const missing = [...new Set(refs)].filter(ref => !fs.existsSync(path.join("_site", ref.slice(2).split(/[?#]/)[0])));
+          if (missing.length) throw new Error("Missing local assets: " + missing.join(", "));
+          if (!fs.readFileSync("_site/px-hero-3d.js", "utf8").includes("templeNightRenderer.js")) throw new Error("Temple renderer wiring missing.");
+          if (!fs.readFileSync("_site/templeNightRenderer.js", "utf8").includes("three@0.149.0/build/three.module.js")) throw new Error("Three.js pin missing.");
+          if (!fs.existsSync("_site/THREEUI-LICENSE.md")) throw new Error("Third-party attribution missing.");
+          if (fs.readFileSync("_site/CNAME", "utf8").trim() !== "pauzex.devs.surf") throw new Error("Custom domain CNAME incorrect.");
+          console.log("Production artifact validated: " + refs.length + " local asset references.");
           NODE
+      - name: Browser-test production artifact
+        run: |
+          set -euo pipefail
+          npm install --no-save --no-package-lock @playwright/test@1.56.1
+          npx playwright install --with-deps chromium
+          node <<'NODE' &
+          const http = require("node:http"), fs = require("node:fs"), path = require("node:path");
+          const root = path.resolve("_site");
+          const types = { ".html":"text/html; charset=utf-8", ".js":"text/javascript; charset=utf-8", ".css":"text/css; charset=utf-8", ".webp":"image/webp", ".svg":"image/svg+xml", ".png":"image/png", ".jpg":"image/jpeg", ".jpeg":"image/jpeg", ".woff2":"font/woff2", ".json":"application/json" };
+          http.createServer((req,res) => {
+            let pathname;
+            try { pathname = decodeURIComponent(new URL(req.url,"http://localhost").pathname); }
+            catch { res.writeHead(400).end("Bad request"); return; }
+            const file = pathname === "/" ? path.join(root,"index.html") : path.resolve(root,"."+pathname);
+            if (file !== path.join(root,"index.html") && !file.startsWith(root + path.sep)) { res.writeHead(403).end("Forbidden"); return; }
+            if (!fs.existsSync(file) || !fs.statSync(file).isFile()) { res.writeHead(404).end("Not found"); return; }
+            res.setHeader("Content-Type",types[path.extname(file)] || "application/octet-stream");
+            res.setHeader("X-Content-Type-Options","nosniff");
+            fs.createReadStream(file).pipe(res);
+          }).listen(4173,"127.0.0.1");
+          NODE
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+          ready=0
+          for attempt in $(seq 1 30); do
+            if curl --silent --fail http://127.0.0.1:4173/ >/dev/null; then ready=1; break; fi
+            sleep 1
+          done
+          [ "$ready" -eq 1 ] || { echo "Static test server failed to start"; exit 1; }
+          npx playwright test tests/verification-gate.spec.cjs --reporter=line
+      - name: Upload GitHub Pages artifact
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
