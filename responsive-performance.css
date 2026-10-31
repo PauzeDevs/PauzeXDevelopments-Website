@@ -149,3 +149,6 @@ a { overflow-wrap: anywhere; }
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .reveal, .reveal.is-visible { opacity: 1 !important; filter: none !important; transform: none !important; }
 }
+
+/* Avoid reserving compositor layers for every off-screen reveal item. */
+.reveal, .reveal.is-visible { will-change: auto; }
