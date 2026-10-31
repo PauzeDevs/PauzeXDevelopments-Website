@@ -54,16 +54,26 @@ test("production layout keeps overlays fixed and project tools outside the title
   await page.goto(baseURL);
   const gate = page.locator("#px-verify-gate");
   if (await gate.isVisible()) await solveGate(page);
-  await page.locator("#skip-intro").click().catch(() => {});
+  const skipIntro = page.locator("#skip-intro");
+  if (await skipIntro.count()) await skipIntro.click();
+  await expect(page.locator("body")).toHaveClass(/site-entered/);
+  await expect(page.locator(".hero .eyebrow")).toHaveClass(/is-visible/);
+  await expect(page.locator("#hero-title")).toBeVisible();
   const positions = await page.evaluate(() => ({
     banner: getComputedStyle(document.querySelector("#cookie-banner")).position,
     dialog: getComputedStyle(document.querySelector("#cookie-dialog")).position,
     skip: getComputedStyle(document.querySelector("#skip-link")).position,
+    mainPosition: getComputedStyle(document.querySelector("#main")).position,
+    mainZIndex: getComputedStyle(document.querySelector("#main")).zIndex,
+    heroOpacity: getComputedStyle(document.querySelector(".hero .eyebrow")).opacity,
     toolsParent: document.querySelector(".project-tools")?.parentElement?.className
   }));
   expect(positions.banner).toBe("fixed");
   expect(positions.dialog).toBe("fixed");
   expect(positions.skip).toBe("fixed");
+  expect(positions.mainPosition).toBe("relative");
+  expect(positions.mainZIndex).toBe("2");
+  expect(Number(positions.heroOpacity)).toBeGreaterThan(0.95);
   expect(positions.toolsParent).not.toContain("work-title-row");
   const missingAsset = await page.request.get(baseURL + "/missing-test-asset.js");
   expect(missingAsset.status()).toBe(404);
