@@ -1,0 +1,39 @@
+/*
+  PauzeX Developments — scroll reveal refinement
+  Uses the existing .reveal / .is-visible hooks from the site's core script.
+*/
+.reveal {
+  opacity: 0;
+  filter: blur(5px);
+  transform: translate3d(0, 34px, 0) scale(.985);
+  transition:
+    opacity .8s cubic-bezier(.2,.75,.25,1),
+    transform .85s cubic-bezier(.2,.75,.25,1),
+    filter .8s cubic-bezier(.2,.75,.25,1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform, filter;
+}
+.reveal.is-visible {
+  opacity: 1;
+  filter: blur(0);
+  transform: translate3d(0,0,0) scale(1);
+}
+.hero-title__line.reveal { transform: translate3d(0,42px,0); }
+.hero-title__line.reveal.is-visible { transform: translate3d(0,0,0); }
+.project-card.reveal { transform: translate3d(0,48px,0) rotateX(2deg); }
+.project-card.reveal.is-visible { transform: translate3d(0,0,0) rotateX(0); }
+.service-row.reveal { transform: translate3d(-24px,20px,0); }
+.service-row.reveal.is-visible { transform: translate3d(0,0,0); }
+@media (max-width:760px) {
+  .reveal { transform: translate3d(0,22px,0); filter: none; }
+  .project-card.reveal { transform: translate3d(0,26px,0); }
+  .service-row.reveal { transform: translate3d(0,18px,0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal.is-visible,
+  .hero-title__line.reveal, .hero-title__line.reveal.is-visible,
+  .project-card.reveal, .project-card.reveal.is-visible,
+  .service-row.reveal, .service-row.reveal.is-visible {
+    opacity: 1; filter: none; transform: none; transition: none; will-change: auto;
+  }
+}
