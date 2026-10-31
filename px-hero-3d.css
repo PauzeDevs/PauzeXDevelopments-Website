@@ -1,5 +1,16 @@
-/* PauzeX hero: lightweight, real-time WebGL scene with a graceful fallback. */
-.hero { isolation: isolate; }
+/*
+ * PauzeX hero — ThreeUI Temple Night presentation.
+ * The original scene remains separate from the editorial content layer.
+ */
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: #eef6fb;
+  background: #05090e !important;
+  border-color: rgba(219,239,252,.56) !important;
+  box-shadow: 0 30px 90px rgba(3,12,20,.20), inset 0 1px 0 rgba(238,248,255,.12);
+}
 .hero::after { display: none !important; }
 .hero-3d-scene {
   position: absolute;
@@ -7,30 +18,68 @@
   inset: 0;
   overflow: hidden;
   pointer-events: none;
-  opacity: .92;
   contain: strict;
+  background:
+    radial-gradient(ellipse at 67% 52%, rgba(39,81,106,.22), transparent 48%),
+    linear-gradient(145deg, #07111a, #05090e 65%, #090e12);
 }
-.hero-3d-scene canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-  max-width: none;
-  pointer-events: none;
-}
-.hero-copy, .hero-foot, .hero-side-note { position: relative; z-index: 2; }
-.hero-copy { max-width: 100%; }
-.hero-3d-fallback {
+.temple-night-canvas {
   position: absolute;
-  width: clamp(190px, 29vw, 390px);
-  aspect-ratio: 1;
-  right: 5%;
-  top: 18%;
-  border: 1px solid rgba(226,244,255,.48);
-  border-radius: 42% 58% 50% 50%;
-  background: radial-gradient(circle at 32% 25%, rgba(255,255,255,.55), transparent 24%), radial-gradient(circle at 65% 72%, rgba(104,170,211,.24), transparent 58%);
-  box-shadow: inset 0 0 45px rgba(225,244,255,.15), 0 20px 80px rgba(37,83,112,.13);
-  transform: rotate(-24deg);
+  inset: 0;
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none;
+  opacity: 0;
+  transition: opacity .65s ease;
 }
+.hero-3d-scene[data-state="ready"] .temple-night-canvas { opacity: 1; }
+.hero-3d-scene::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(3,9,14,.88) 0%, rgba(3,9,14,.70) 36%, rgba(3,9,14,.22) 75%, rgba(3,9,14,.12) 100%),
+    linear-gradient(0deg, rgba(3,9,14,.58) 0%, transparent 35%, rgba(3,9,14,.18) 100%);
+}
+.hero-3d-scene[data-state="fallback"]::after {
+  background:
+    radial-gradient(ellipse at 72% 42%, rgba(105,153,181,.17), transparent 45%),
+    linear-gradient(90deg, rgba(3,9,14,.82), rgba(3,9,14,.38));
+}
+.hero-copy, .hero-foot, .hero-side-note {
+  position: relative;
+  z-index: 2;
+}
+.hero-copy { max-width: 1060px; }
+.hero .eyebrow, .hero .hero-foot, .hero-side-note {
+  color: rgba(208,226,238,.76) !important;
+}
+.hero .eyebrow__line { background: #8dbdd9 !important; }
+.hero-title {
+  color: #f0f7fb !important;
+  text-shadow: 0 2px 28px rgba(0,0,0,.30);
+}
+.hero-title em { color: #a5d6f3 !important; }
+.hero-description {
+  max-width: 570px;
+  color: rgba(220,235,244,.86) !important;
+  text-shadow: 0 1px 14px rgba(0,0,0,.34);
+}
+.hero .button--dark {
+  color: #102535 !important;
+  background: #e4f1f8 !important;
+  border-color: rgba(239,248,253,.9) !important;
+  box-shadow: 0 12px 34px rgba(0,0,0,.24), inset 0 1px 0 white;
+}
+.hero .button--dark:hover { background: #fff !important; }
+.hero .text-link, .hero .scroll-cue { color: #e0edf5 !important; }
+.hero .scroll-cue__wheel { border-color: rgba(224,237,245,.72) !important; }
+.hero-foot { z-index: 2; }
+.hero-side-note { z-index: 2; }
+
 .project-grid {
   display: grid !important;
   grid-template-columns: minmax(0, 1fr);
@@ -46,12 +95,37 @@
   box-shadow: 0 16px 40px rgba(4,22,35,.12), inset 0 1px 0 rgba(255,255,255,.12) !important;
 }
 @media (max-width: 760px) {
-  .hero { min-height: min(760px, 92svh); padding: 132px 20px 100px; }
-  .hero-3d-scene { opacity: .72; }
+  .hero {
+    min-height: min(780px, 94svh);
+    padding: 126px 20px 102px;
+  }
+  .hero-3d-scene { opacity: .94; }
+  .hero-3d-scene::after {
+    background:
+      linear-gradient(180deg, rgba(3,9,14,.72) 0%, rgba(3,9,14,.44) 48%, rgba(3,9,14,.40) 100%),
+      linear-gradient(90deg, rgba(3,9,14,.34), rgba(3,9,14,.08));
+  }
   .hero-copy { max-width: 100%; }
-  .hero-title { font-size: clamp(3rem, 12.2vw, 5.1rem) !important; line-height: .94; }
-  .hero-description { margin-left: 0 !important; max-width: 34rem; }
+  .hero-title {
+    font-size: clamp(2.95rem, 12vw, 5.1rem) !important;
+    line-height: .94;
+  }
+  .hero-description {
+    margin-left: 0 !important;
+    max-width: 34rem;
+    font-size: clamp(.93rem, 3.5vw, 1.05rem);
+    line-height: 1.72;
+  }
   .hero-actions { margin-left: 0 !important; }
+  .hero-foot {
+    left: 20px;
+    right: 20px;
+    bottom: 19px;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+  }
+  .hero-foot > span:first-child { font-size: 6.5px; }
+  .hero .scroll-cue { font-size: 7px; letter-spacing: .06em; gap: 6px; }
   .project-grid { gap: 22px; }
   .project-card, .project-card--weather {
     border-radius: 21px !important;
@@ -61,11 +135,12 @@
   .project-title-row h3 { font-size: clamp(2.5rem, 10vw, 3.4rem) !important; }
 }
 @media (max-width: 420px) {
-  .hero { padding: 120px 17px 96px; min-height: 680px; }
+  .hero { padding: 116px 17px 96px; min-height: 680px; }
+  .hero-foot { left: 17px; right: 17px; }
+  .hero-foot > span:first-child { max-width: 150px; }
   .project-grid { gap: 18px; }
   .project-card, .project-card--weather { padding: 21px 18px !important; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero-3d-scene { display: none; }
-  .hero-3d-fallback { display: block; }
+  .temple-night-canvas { transition: none; }
 }
