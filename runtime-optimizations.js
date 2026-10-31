@@ -4,7 +4,6 @@
 */
 (() => {
   "use strict";
-  const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // Use one animation-frame scheduler for the scroll-linked polish.
@@ -61,13 +60,5 @@
     return response;
   };
 
-  // Pointer-driven effects only run on desktop-class pointers.
-  if (!finePointer || reduceMotion) return;
-  document.querySelectorAll(".project-card").forEach(card => {
-    card.addEventListener("pointermove", event => {
-      const rect = card.getBoundingClientRect();
-      card.style.setProperty("--card-x", ((event.clientX - rect.left) / rect.width * 100).toFixed(1) + "%");
-      card.style.setProperty("--card-y", ((event.clientY - rect.top) / rect.height * 100).toFixed(1) + "%");
-    }, { passive: true });
-  });
+  // Project-card pointer tilt and highlight are owned by immersive.js to avoid duplicate listeners.
 })();
