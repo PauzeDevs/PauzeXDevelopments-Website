@@ -334,3 +334,54 @@
   .hero-description { font-size: 14px !important; }
   .hero-foot { margin-top: 44px; }
 }
+
+
+/* Final site-wide glass composition: the Temple Night WebGL scene is the
+   continuous page background. Sections are translucent glass, never opaque
+   colour panels that replace the 3D scene. */
+#main > .studio,
+#main > .services {
+  background: rgba(232, 239, 243, .24) !important;
+  -webkit-backdrop-filter: blur(13px) saturate(125%);
+  backdrop-filter: blur(13px) saturate(125%);
+}
+#main > .work {
+  background: rgba(5, 13, 19, .38) !important;
+  -webkit-backdrop-filter: blur(11px) saturate(120%);
+  backdrop-filter: blur(11px) saturate(120%);
+}
+#main > .closing {
+  background: rgba(5, 12, 17, .48) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  backdrop-filter: blur(14px) saturate(120%);
+}
+#main > .studio .studio-note {
+  background: linear-gradient(145deg, rgba(255,255,255,.42), rgba(255,255,255,.16)) !important;
+  border: 1px solid rgba(255,255,255,.64);
+  border-radius: 24px;
+  padding: clamp(24px, 4vw, 38px);
+  box-shadow: 0 22px 60px rgba(0,0,0,.12), inset 0 1px 0 rgba(255,255,255,.62);
+  -webkit-backdrop-filter: blur(22px) saturate(145%);
+  backdrop-filter: blur(22px) saturate(145%);
+}
+#main > .work .project-card,
+#main > .work .activity-panel {
+  background-color: rgba(8, 19, 27, .34);
+}
+#main > .services .service-row {
+  background: rgba(255,255,255,.10);
+  -webkit-backdrop-filter: blur(9px);
+  backdrop-filter: blur(9px);
+}
+@media (max-width: 760px), (pointer: coarse) {
+  #main > .studio,
+  #main > .services {
+    background: rgba(232, 239, 243, .30) !important;
+  }
+  #main > .work {
+    background: rgba(5, 13, 19, .44) !important;
+  }
+  #main > .closing {
+    background: rgba(5, 12, 17, .52) !important;
+  }
+}
