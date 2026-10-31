@@ -11,6 +11,10 @@
   const host = document.querySelector(".hero-3d-scene");
   if (!hero || !host) return;
 
+  // The Temple Night scene is a site-wide fixed background, not a hero-only panel.
+  document.body.appendChild(host);
+  host.classList.add("temple-night-background");
+
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   let renderer = null;
@@ -103,8 +107,8 @@
       if (resizeObserver) resizeObserver.observe(host);
       else window.addEventListener("resize", handleResize, { passive: true });
 
-      hero.addEventListener("pointermove", handlePointerMove, { passive: true });
-      hero.addEventListener("pointerleave", clearPointer, { passive: true });
+      window.addEventListener("pointermove", handlePointerMove, { passive: true });
+      window.addEventListener("pointerout", (event) => { if (!event.relatedTarget) clearPointer(); }, { passive: true });
       window.addEventListener("blur", clearPointer);
       document.addEventListener("visibilitychange", onVisibilityChange);
       handleResize();
@@ -127,8 +131,8 @@
       visible = entries.some(entry => entry.isIntersecting);
       if (!visible) cancelFrame();
       else checkStart();
-    }, { rootMargin: "100px 0px", threshold: 0.01 });
-    visibilityObserver.observe(hero);
+    }, { rootMargin: "0px", threshold: 0.01 });
+    visibilityObserver.observe(host);
   } else {
     visible = true;
   }
@@ -157,8 +161,7 @@
     introObserver?.disconnect();
     resizeObserver?.disconnect();
     window.removeEventListener("resize", handleResize);
-    hero.removeEventListener("pointermove", handlePointerMove);
-    hero.removeEventListener("pointerleave", clearPointer);
+    window.removeEventListener("pointermove", handlePointerMove);
     window.removeEventListener("blur", clearPointer);
     document.removeEventListener("visibilitychange", onVisibilityChange);
     renderer?.dispose();
@@ -166,8 +169,8 @@
   });
   window.addEventListener("pageshow", (event) => {
     if (!event.persisted) return;
-    visible = hero.getBoundingClientRect().bottom > 0 &&
-      hero.getBoundingClientRect().top < window.innerHeight;
+    visible = host.getBoundingClientRect().bottom > 0 &&
+      host.getBoundingClientRect().top < window.innerHeight;
     schedule();
   });
 })();
