@@ -67,13 +67,8 @@ jobs:
             console.error("Missing local site assets:", missing.join(", "));
             process.exit(1);
           }
-          const scripts = [...html.matchAll(/<script\b[^>]*\bsrc=["']\.\/([^"'?#]+)["']/g)];
+          const scripts = refs.map(match => match[1]).filter(ref => /\.m?js$/.test(ref));
           if (!scripts.length) throw new Error("No local JavaScript bundles are referenced.");
-          for (const match of scripts) {
-            if (!fs.existsSync(path.join("_site", match[1]))) {
-              throw new Error("Missing JavaScript bundle: " + match[1]);
-            }
-          }
           console.log("Validated " + refs.length + " local asset references and " + scripts.length + " script bundles.");
           NODE
 
