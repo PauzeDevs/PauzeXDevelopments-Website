@@ -144,3 +144,80 @@
 @media (prefers-reduced-motion: reduce) {
   .temple-night-canvas { transition: none; }
 }
+
+/* Site-wide Temple Night background layer */
+.temple-night-background {
+  position: fixed !important;
+  z-index: 0 !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+  contain: strict;
+  opacity: 1;
+  background: #05090e !important;
+}
+.temple-night-background .temple-night-canvas {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+.temple-night-background::after {
+  background:
+    linear-gradient(180deg, rgba(4,9,14,.38), rgba(4,9,14,.20) 42%, rgba(4,9,14,.48)),
+    linear-gradient(90deg, rgba(4,9,14,.30), rgba(4,9,14,.06) 55%, rgba(4,9,14,.22)) !important;
+}
+/* Keep all site content above the fixed canvas. The page panels are translucent
+   so the temple remains visible as the visitor scrolls through every section. */
+.site-header, #main, .site-footer, .scroll-meter, .skip-link, .cookie-banner, .cookie-dialog {
+  position: relative;
+  z-index: 2;
+}
+.intro { z-index: 20 !important; }
+.site-header {
+  background: rgba(239,244,241,.78) !important;
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+#main { background: transparent !important; }
+#main > section {
+  background-color: rgba(238,242,238,.82);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+}
+#main > .hero {
+  background: transparent !important;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+#main > .studio,
+#main > .work,
+#main > .services {
+  background-color: rgba(238,242,238,.78) !important;
+}
+#main > .closing {
+  background-color: rgba(7,17,22,.84) !important;
+  color: #f2f6f5;
+}
+.site-footer {
+  background: rgba(229,236,233,.88) !important;
+}
+@media (max-width: 760px), (pointer: coarse) {
+  .temple-night-background::after {
+    background:
+      linear-gradient(180deg, rgba(4,9,14,.30), rgba(4,9,14,.22) 45%, rgba(4,9,14,.40)),
+      linear-gradient(90deg, rgba(4,9,14,.20), rgba(4,9,14,.08)) !important;
+  }
+  #main > section {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background-color: rgba(238,242,238,.88);
+  }
+  #main > .hero, #main > .closing {
+    background-color: transparent !important;
+  }
+  .site-header { -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
