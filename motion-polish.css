@@ -1,0 +1,89 @@
+/*
+  PauzeX Developments — motion and interaction polish
+  Additive enhancement layer. No content or existing components are removed.
+*/
+:root {
+  --px-ease: cubic-bezier(.2,.75,.25,1);
+  --px-scroll: 0;
+}
+html { scroll-behavior: smooth; }
+:focus-visible {
+  outline: 2px solid #8fc3e4;
+  outline-offset: 4px;
+}
+.site-header {
+  transition: background .35s var(--px-ease), box-shadow .35s var(--px-ease), border-color .35s var(--px-ease), transform .35s var(--px-ease);
+}
+.site-header.is-scrolled {
+  background: rgba(232,241,247,.78);
+  box-shadow: 0 14px 42px rgba(17,43,61,.13), inset 0 1px 0 rgba(255,255,255,.8);
+}
+.desktop-nav a, .mobile-nav a {
+  position: relative;
+  transition: color .25s ease, opacity .25s ease;
+}
+.desktop-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -8px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform .35s var(--px-ease);
+}
+.desktop-nav a:hover::after, .desktop-nav a[aria-current="location"]::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+.desktop-nav a[aria-current="location"] { color: #477da1; }
+.hero-copy { transform-style: preserve-3d; }
+.hero-title__line { transition: transform .7s var(--px-ease); }
+.hero:hover .hero-title__line--second { transform: translateX(5px); }
+.hero:hover .hero-title__line--last { transform: translateX(10px); }
+.hero::after { animation: px-orb-drift 13s ease-in-out infinite alternate; }
+@keyframes px-orb-drift {
+  from { translate: 0 0; rotate: -4deg; }
+  to { translate: -16px 18px; rotate: 5deg; }
+}
+.project-card {
+  --card-x: 50%;
+  --card-y: 0%;
+  transform-origin: center;
+}
+.project-card::before {
+  z-index: 2;
+  opacity: 0;
+  transition: opacity .35s ease;
+  background: radial-gradient(320px circle at var(--card-x) var(--card-y), rgba(218,242,255,.18), transparent 68%);
+}
+.project-card:hover::before, .project-card:focus-within::before { opacity: 1; }
+.project-card .project-title-row h3 { transition: letter-spacing .35s var(--px-ease), transform .35s var(--px-ease); }
+.project-card:hover .project-title-row h3 { letter-spacing: -.055em; transform: translateZ(25px); }
+.project-card .project-link { transition: color .25s ease, transform .3s var(--px-ease); }
+.project-card .project-link:hover { transform: translate3d(4px,-2px,18px); }
+.project-card .project-arrow { transition: transform .4s var(--px-ease), background .3s ease; }
+.project-card:hover .project-arrow { transform: translateZ(26px) rotate(45deg); }
+.button, .header-contact, .back-to-top {
+  transition: transform .25s var(--px-ease), box-shadow .25s ease, background .25s ease, color .25s ease;
+}
+.button:hover { transform: translateY(-3px); box-shadow: 0 14px 28px rgba(8,29,44,.18); }
+.button:active { transform: translateY(-1px) scale(.985); }
+.service-row .service-symbol { transition: transform .35s var(--px-ease), background .3s ease, color .3s ease; }
+.service-row:hover .service-symbol { transform: rotate(45deg); }
+.activity-item { transition: background .3s ease, padding .3s var(--px-ease), border-color .3s ease; }
+.activity-item:hover { border-color: rgba(190,222,241,.35); }
+#scroll-meter-fill { transform-origin: left center; will-change: width; }
+@media (max-width: 760px) {
+  .hero:hover .hero-title__line--second, .hero:hover .hero-title__line--last { transform: none; }
+  .project-card { transform: none !important; }
+  .project-card::before { display: none; }
+  .button:hover { transform: none; box-shadow: none; }
+  .service-row:hover { transform: none; }
+  .site-header.is-scrolled { background: rgba(232,241,247,.94); }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .hero::after { animation: none !important; }
+  .hero-title__line, .project-card, .button, .service-row, .activity-item { transition: none !important; }
+}
