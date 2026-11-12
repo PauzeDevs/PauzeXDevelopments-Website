@@ -39,7 +39,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p _site
-          cp -a ./*.html ./*.css ./*.js .nojekyll CNAME THREEUI-LICENSE.md _site/
+          cp -a ./*.html ./*.css ./*.js .nojekyll CNAME robots.txt sitemap.xml THREEUI-LICENSE.md _site/
           if [ -d .well-known ]; then mkdir -p _site/.well-known; cp -R .well-known/. _site/.well-known/; fi
           if [ -d assets ]; then mkdir -p _site/assets; cp -R assets/. _site/assets/; fi
       - name: Minify and validate production artifact
@@ -74,6 +74,10 @@ jobs:
           if (!fs.readFileSync("_site/templeNightRenderer.js", "utf8").includes("three@0.149.0/build/three.module.js")) throw new Error("Three.js pin missing.");
           if (!fs.existsSync("_site/THREEUI-LICENSE.md")) throw new Error("Third-party attribution missing.");
           if (fs.readFileSync("_site/CNAME", "utf8").trim() !== "pauzex.devs.surf") throw new Error("Custom domain CNAME incorrect.");
+          for (const file of ["robots.txt", "sitemap.xml"]) if (!fs.existsSync(path.join("_site", file))) throw new Error("SEO file missing from deployment: " + file);
+          const sitemap = fs.readFileSync("_site/sitemap.xml", "utf8");
+          if (!sitemap.includes("<urlset") || !sitemap.includes("<loc>https://pauzex.devs.surf/</loc>")) throw new Error("Sitemap content is invalid.");
+          if (!fs.readFileSync("_site/robots.txt", "utf8").includes("Sitemap: https://pauzex.devs.surf/sitemap.xml")) throw new Error("Robots sitemap directive missing.");
           console.log("Production artifact validated: " + refs.length + " local asset references.");
           NODE
       - name: Browser-test production artifact
